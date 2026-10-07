@@ -1,0 +1,16 @@
+node_modules/
+dist/
+dist-ssr/
+.env
+.env.*
+*.local
+*.log
+.npm-cache/
+.vercel/
+.preview/
+coverage/
+tests/
+docs/
+.idea/
+.vscode/
+.DS_Store
