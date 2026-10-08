@@ -1,7 +1,7 @@
 export const games = [
   {
     id: 'pokemon',
-    name: 'Pokémon',
+    name: 'Pokemon',
     subtitle: 'From first partners to full arts.',
     index: '01',
     image: '/cards/mew.png',

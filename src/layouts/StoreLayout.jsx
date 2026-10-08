@@ -139,7 +139,7 @@ function StoreHeader() {
             Shop all
           </NavLink>
           <Link to="/shop?game=pokemon" onClick={closeMenu}>
-            Pokémon
+            Pokemon
           </Link>
           <Link to="/shop?game=one-piece" onClick={closeMenu}>
             One Piece

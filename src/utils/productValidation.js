@@ -45,7 +45,7 @@ export function validateProduct(values, products, editingId = null) {
   )
     errors.imageUrl = 'Use an HTTPS URL or a local asset path.'
   product.gameName = {
-    pokemon: 'Pokémon',
+    pokemon: 'Pokemon',
     'one-piece': 'One Piece',
     magic: 'Magic: The Gathering',
   }[product.game]
