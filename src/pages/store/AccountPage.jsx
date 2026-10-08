@@ -1,6 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router'
-import ChangePassword from '../../components/store/ChangePassword'
 import { useAuth } from '../../hooks/useAuth'
 import { apiError, apiFields } from '../../utils/api'
 
@@ -62,7 +60,7 @@ export default function AccountPage() {
     <div className="page-width workshop-page auth-page">
       <header className="page-intro">
         <p className="eyebrow">TCG404 / YOUR ACCOUNT</p>
-        <h1>Your account.</h1>
+        <h1>Your profile.</h1>
       </header>
       {loading ? (
         <div className="empty-panel" role="status">
@@ -106,10 +104,6 @@ export default function AccountPage() {
                 readOnly
               />
             </label>
-            <p>
-              Account role:{' '}
-              <strong>{user.role === 'admin' ? 'Admin' : 'Customer'}</strong>
-            </p>
             <p
               id="profile-error"
               ref={errorSummary}
@@ -123,13 +117,7 @@ export default function AccountPage() {
             <button className="button button-primary" disabled={saving}>
               {saving ? 'Saving...' : 'Save profile'}
             </button>
-            <Link to="/cart">View your cart</Link>
-            <Link to="/account/orders">View your orders</Link>
-            {user.role === 'admin' && (
-              <Link to="/admin">Open admin workspace</Link>
-            )}
           </form>
-          <ChangePassword />
         </div>
       )}
     </div>

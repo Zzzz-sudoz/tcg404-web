@@ -138,15 +138,18 @@ export default function AuthPage({ register = false }) {
         <button className="button button-primary" disabled={saving}>
           {saving ? 'Please wait...' : register ? 'Create account' : 'Login'}
         </button>
-        <Link
-          to={
-            (register ? '/login' : '/register') +
-            '?returnTo=' +
-            encodeURIComponent(returnTo)
-          }
-        >
-          {register ? 'Already have an account? Login' : 'Create account'}
-        </Link>
+        <p className="auth-switch">
+          <span>{register ? 'Already have an account?' : "Don't have an account?"}</span>
+          <Link
+            to={
+              (register ? '/login' : '/register') +
+              '?returnTo=' +
+              encodeURIComponent(returnTo)
+            }
+          >
+            {register ? 'Login' : 'Sign up'}
+          </Link>
+        </p>
       </form>
     </div>
   )

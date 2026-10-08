@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { api, apiError } from '../utils/api'
+import { readApi, apiError } from '../utils/api'
 export function useApiQuery(path, query = '', revision = 0) {
   const key = `${path}?${query}:${revision}`
   const [result, setResult] = useState({
@@ -13,11 +13,7 @@ export function useApiQuery(path, query = '', revision = 0) {
     const timer = setTimeout(
       () => {
         setResult((current) => ({ ...current, loading: true, error: '' }))
-        api
-          .get(path, {
-            params: new URLSearchParams(query),
-            signal: controller.signal,
-          })
+        readApi(path, query, controller.signal, revision > 0)
           .then(({ data }) => {
             if (!controller.signal.aborted)
               setResult({
@@ -29,7 +25,7 @@ export function useApiQuery(path, query = '', revision = 0) {
               })
           })
           .catch((e) => {
-            if (e.code !== 'ERR_CANCELED')
+            if (!controller.signal.aborted && e.code !== 'ERR_CANCELED')
               setResult({
                 key,
                 data: [],

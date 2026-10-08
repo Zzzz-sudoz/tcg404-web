@@ -1,3 +1,4 @@
+import LoadingLayout from '../../components/common/LoadingLayout'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router'
 import { usePrototype } from '../../hooks/usePrototype'
@@ -182,9 +183,7 @@ export default function ShopPage() {
               </button>
             </div>
           ) : response.loading ? (
-            <div className="empty-panel" role="status">
-              Loading cards...
-            </div>
+            <LoadingLayout />
           ) : !result.items.length ? (
             <div className="empty-panel">
               <h2>No cards in this view.</h2>

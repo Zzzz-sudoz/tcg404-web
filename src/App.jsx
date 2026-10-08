@@ -1,3 +1,4 @@
+import './styles/loading.css'
 import { BrowserRouter, Route, Routes } from 'react-router'
 import StoreLayout from './layouts/StoreLayout'
 import HomePage from './pages/store/HomePage'
@@ -5,6 +6,10 @@ import AuthPage from './pages/store/AuthPage'
 import AuthProvider from './contexts/AuthProvider'
 import CartProvider from './contexts/CartProvider'
 import AccountPage from './pages/store/AccountPage'
+import AccountLayout from './layouts/AccountLayout'
+import AccountOverview from './pages/store/AccountOverview'
+import AccountPreferences from './pages/store/AccountPreferences'
+import ChangePassword from './components/store/ChangePassword'
 import OrdersPage from './pages/store/OrdersPage'
 import OrderDetailPage from './pages/store/OrderDetailPage'
 import AdminInventoryPage from './pages/admin/AdminInventoryPage'
@@ -24,13 +29,14 @@ import AdminPlaceholderPage from './pages/admin/AdminPlaceholderPage'
 import './App.css'
 import './styles/workshop.css'
 import './styles/collector-operations.css'
+import './styles/customer-workspace.css'
 
 export default function App() {
   return (
     <BrowserRouter>
-    <AuthProvider>
-      <PrototypeProvider>
-        <CartProvider>
+      <AuthProvider>
+        <PrototypeProvider>
+          <CartProvider>
             <Routes>
               <Route element={<StoreLayout />}>
                 <Route index element={<HomePage />} />
@@ -39,9 +45,32 @@ export default function App() {
                 <Route path="cart" element={<CartPage />} />
                 <Route element={<ProtectedRoute />}>
                   <Route path="checkout" element={<CheckoutPage />} />
-                  <Route path="account" element={<AccountPage />} />
-                  <Route path="account/orders" element={<OrdersPage />} />
-                  <Route path="account/orders/:id" element={<OrderDetailPage />} />
+                  <Route path="account" element={<AccountLayout />}>
+                    <Route index element={<AccountOverview />} />
+                    <Route path="profile" element={<AccountPage />} />
+                    <Route path="orders" element={<OrdersPage />} />
+                    <Route path="orders/:id" element={<OrderDetailPage />} />
+                    <Route path="cart" element={<CartPage />} />
+                    <Route
+                      path="addresses"
+                      element={<AccountPreferences key="addresses" />}
+                    />
+                    <Route
+                      path="payments"
+                      element={<AccountPreferences key="payments" payments />}
+                    />
+                    <Route
+                      path="password"
+                      element={
+                        <section className="customer-password">
+                          <header className="page-intro">
+                            <h1>Password.</h1>
+                          </header>
+                          <ChangePassword />
+                        </section>
+                      }
+                    />
+                  </Route>
                 </Route>
                 <Route path="login" element={<AuthPage key="login" />} />
                 <Route
@@ -64,17 +93,23 @@ export default function App() {
                   />
                   <Route path="card-import" element={<AdminCardImportPage />} />
                   <Route path="orders" element={<OrdersPage admin />} />
-                  <Route path="orders/:id" element={<OrderDetailPage admin />} />
+                  <Route
+                    path="orders/:id"
+                    element={<OrderDetailPage admin />}
+                  />
                   <Route path="analytics" element={<AdminDashboardPage />} />
                   <Route path="inventory" element={<AdminInventoryPage />} />
-                  <Route path="inventory/movements" element={<AdminInventoryPage movements />} />
+                  <Route
+                    path="inventory/movements"
+                    element={<AdminInventoryPage movements />}
+                  />
                   <Route path="*" element={<AdminPlaceholderPage />} />
                 </Route>
               </Route>
             </Routes>
-        </CartProvider>
-      </PrototypeProvider>
-    </AuthProvider>
+          </CartProvider>
+        </PrototypeProvider>
+      </AuthProvider>
     </BrowserRouter>
   )
 }
