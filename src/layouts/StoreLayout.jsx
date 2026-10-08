@@ -135,14 +135,6 @@ function StoreHeader() {
             Magic: The Gathering
           </Link>
           <Link
-            className="nav-arrivals"
-            to="/#new-arrivals"
-            onClick={closeMenu}
-          >
-            New arrivals
-            <Icon name="arrow" />
-          </Link>
-          <Link
             className="mobile-account"
             to={isAdmin ? '/admin' : user ? '/account' : '/login'}
             onClick={closeMenu}

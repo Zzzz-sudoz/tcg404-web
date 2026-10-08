@@ -1,5 +1,5 @@
 import './styles/loading.css'
-import { BrowserRouter, Route, Routes } from 'react-router'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router'
 import StoreLayout from './layouts/StoreLayout'
 import HomePage from './pages/store/HomePage'
 import AuthPage from './pages/store/AuthPage'
@@ -9,7 +9,6 @@ import AccountPage from './pages/store/AccountPage'
 import AccountLayout from './layouts/AccountLayout'
 import AccountOverview from './pages/store/AccountOverview'
 import AccountPreferences from './pages/store/AccountPreferences'
-import ChangePassword from './components/store/ChangePassword'
 import OrdersPage from './pages/store/OrdersPage'
 import OrderDetailPage from './pages/store/OrderDetailPage'
 import AdminInventoryPage from './pages/admin/AdminInventoryPage'
@@ -61,14 +60,7 @@ export default function App() {
                     />
                     <Route
                       path="password"
-                      element={
-                        <section className="customer-password">
-                          <header className="page-intro">
-                            <h1>Password.</h1>
-                          </header>
-                          <ChangePassword />
-                        </section>
-                      }
+                      element={<Navigate to="/account/profile" replace />}
                     />
                   </Route>
                 </Route>

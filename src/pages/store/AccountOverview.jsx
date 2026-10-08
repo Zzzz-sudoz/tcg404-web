@@ -13,9 +13,6 @@ export default function AccountOverview() {
       <header className="customer-welcome">
         <p className="eyebrow">YOUR COLLECTOR SPACE</p>
         <h1>Welcome back, {user.name}.</h1>
-        <Link className="button button-primary" to="/shop">
-          Find your next card <Icon name="arrow" />
-        </Link>
       </header>
       <div className="customer-shortcuts">
         {[

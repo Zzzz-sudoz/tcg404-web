@@ -354,3 +354,29 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.customer-preferences > .button-primary {
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+}
+.profile-password-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.profile-password-row > div {
+  display: grid;
+  gap: 8px;
+}
+.profile-password-mask {
+  letter-spacing: 3px;
+  color: var(--muted);
+}
+
+#profile-password-form {
+  margin-top: 24px;
+}

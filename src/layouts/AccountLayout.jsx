@@ -25,7 +25,6 @@ export default function AccountLayout() {
             ['cart', 'Cart', 'cards'],
             ['addresses', 'Addresses', 'location'],
             ['payments', 'Payment methods', 'payment'],
-            ['password', 'Password', 'lock'],
           ].map(([path, label, icon]) => (
             <NavLink
               key={path}

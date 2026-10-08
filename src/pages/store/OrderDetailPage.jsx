@@ -45,7 +45,9 @@ export default function OrderDetailPage({ admin = false }) {
     }
   }
   return (
-    <div className={admin ? 'admin-page' : 'page-width workshop-page'}>
+    <div
+      className={`receipt-page ${admin ? 'admin-page' : 'page-width workshop-page'}`}
+    >
       <Link
         className="text-link"
         to={admin ? '/admin/orders' : '/account/orders'}
@@ -79,10 +81,6 @@ export default function OrderDetailPage({ admin = false }) {
                 </div>
               )}
               <h2>Ordered singles</h2>
-              <p className="scroll-hint orders-scroll-hint">
-                Scroll horizontally for all columns. Keyboard: focus the table
-                area and use arrow keys.
-              </p>
               <div
                 className="table-scroll"
                 role="region"
@@ -157,10 +155,10 @@ export default function OrderDetailPage({ admin = false }) {
                 </p>
               )}
               {admin && statusOptions(order.status).length > 0 && (
-                <form onSubmit={update}>
+                <form className="order-status-form" onSubmit={update}>
                   <h2>Update order status</h2>
                   <label>
-                    Next status
+                    Status
                     <select name="status" disabled={saving}>
                       {statusOptions(order.status).map((status) => (
                         <option key={status} value={status}>
@@ -169,10 +167,6 @@ export default function OrderDetailPage({ admin = false }) {
                       ))}
                     </select>
                   </label>
-                  <p className="muted">
-                    Cancellation restores ordered stock once. Completed and
-                    cancelled orders are final.
-                  </p>
                   <button className="button button-primary" disabled={saving}>
                     {saving ? 'Saving...' : 'Save status'}
                   </button>

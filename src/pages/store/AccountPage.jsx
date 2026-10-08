@@ -1,3 +1,4 @@
+import ChangePassword from '../../components/store/ChangePassword'
 import { useEffect, useRef, useState } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import { apiError, apiFields } from '../../utils/api'
@@ -11,6 +12,12 @@ export default function AccountPage() {
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
+  const [changingPassword, setChangingPassword] = useState(false)
+  const passwordSection = useRef(null)
+  useEffect(() => {
+    if (changingPassword)
+      passwordSection.current?.querySelector('input')?.focus()
+  }, [changingPassword])
   const pending = useRef(false)
   const errorSummary = useRef(null)
   useEffect(() => {
@@ -104,6 +111,26 @@ export default function AccountPage() {
                 readOnly
               />
             </label>
+            <div className="profile-password-row">
+              <div>
+                <span>Password</span>
+                <span
+                  className="profile-password-mask"
+                  aria-label="Password is hidden"
+                >
+                  {'\u2022'.repeat(8)}
+                </span>
+              </div>
+              <button
+                type="button"
+                className="button button-secondary"
+                aria-expanded={changingPassword}
+                aria-controls="profile-password-form"
+                onClick={() => setChangingPassword((value) => !value)}
+              >
+                {changingPassword ? 'Cancel' : 'Change password'}
+              </button>
+            </div>
             <p
               id="profile-error"
               ref={errorSummary}
@@ -118,6 +145,11 @@ export default function AccountPage() {
               {saving ? 'Saving...' : 'Save profile'}
             </button>
           </form>
+          {changingPassword && (
+            <div id="profile-password-form" ref={passwordSection}>
+              <ChangePassword />
+            </div>
+          )}
         </div>
       )}
     </div>

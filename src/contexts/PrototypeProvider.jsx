@@ -25,20 +25,11 @@ export default function PrototypeProvider({ children }) {
       setLoading(true)
       setError('')
       try {
-        await Promise.all([
-          api
-            .get('/products', {
-              params: { featured: true, limit: 8 },
-              signal,
-            })
-            .then((response) => {
-              if (!signal?.aborted) rememberProducts(response.data.data)
-            }),
-          api.get('/products', {
-            params: { sort: 'newest', limit: 8 },
-            signal,
-          }),
-        ])
+        const response = await api.get('/products', {
+          params: { featured: true, limit: 8 },
+          signal,
+        })
+        if (!signal?.aborted) rememberProducts(response.data.data)
       } catch (e) {
         if (e.code !== 'ERR_CANCELED') setError(apiError(e))
       } finally {

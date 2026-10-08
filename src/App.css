@@ -105,7 +105,11 @@
   font-weight: 700;
 }
 .global-search button:hover {
-  background: radial-gradient(circle, var(--accent-hover) 18px, transparent 18.5px);
+  background: radial-gradient(
+    circle,
+    var(--accent-hover) 18px,
+    transparent 18.5px
+  );
 }
 .global-search button:hover svg {
   transform: translateX(3px);
@@ -166,14 +170,14 @@ dialog.signout-dialog {
 .signout-dialog[open] {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 20px;
 }
 .signout-emblem {
   display: grid;
   place-items: center;
   width: 52px;
   height: 52px;
-  margin-bottom: 8px;
+  margin: 0 auto 4px;
   border: 1px solid #f4da8140;
   border-radius: 14px;
   color: var(--accent);
@@ -858,8 +862,7 @@ dialog.signout-dialog {
   display: block;
   min-height: 44px;
 }
-.product-card h3 a:hover,
-.arrival-card h3 a:hover {
+.product-card h3 a:hover {
   color: var(--accent);
 }
 .product-set {
@@ -904,68 +907,6 @@ dialog.signout-dialog {
   font-size: 0.72rem;
   color: var(--muted);
   margin-top: 16px;
-}
-.arrivals-grid {
-  display: grid;
-  gap: 16px;
-}
-.arrival-card {
-  display: grid;
-  grid-template-columns: 80px minmax(0, 1fr);
-  gap: 16px;
-  padding: 16px;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: var(--surface);
-}
-.arrival-media {
-  padding: 6px;
-  background: var(--media);
-  aspect-ratio: 5 / 7;
-  border-radius: var(--radius-small);
-}
-.arrival-media .artwork-placeholder {
-  font-size: 0.6rem;
-  gap: 3px;
-  padding: 4px;
-}
-.arrival-media .artwork-placeholder small {
-  display: none;
-}
-.arrival-media .artwork-placeholder svg {
-  width: 24px;
-}
-.arrival-label {
-  font-size: 0.65rem;
-  color: var(--lavender);
-}
-.arrival-info h3 {
-  font-size: 1rem;
-}
-.arrival-info h3 a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-}
-.arrival-info > p {
-  font-size: 0.7rem;
-  color: var(--muted);
-}
-.arrival-info .arrival-condition {
-  font-size: 0.65rem;
-  margin-top: 4px;
-}
-.arrival-info > div {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 8px;
-}
-.arrival-info strong {
-  font-size: 0.95rem;
-  color: var(--accent);
 }
 .collector-note {
   position: relative;
@@ -1242,9 +1183,6 @@ dialog.signout-dialog {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 24px;
   }
-  .arrivals-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
   .product-card {
     padding: 16px;
   }
@@ -1358,9 +1296,6 @@ dialog.signout-dialog {
     align-items: center;
     gap: 32px;
     padding-block: 0;
-  }
-  .nav-arrivals {
-    margin-left: auto;
   }
   .store-nav .mobile-account {
     display: none;

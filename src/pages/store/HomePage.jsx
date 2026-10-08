@@ -1,7 +1,7 @@
 import LoadingLayout from '../../components/common/LoadingLayout'
 import { useEffect } from 'react'
 import { Link } from 'react-router'
-import { formatPrice, games } from '../../data/store'
+import { games } from '../../data/store'
 import { usePrototype } from '../../hooks/usePrototype'
 import Icon from '../../components/common/Icon'
 import Section from '../../components/common/Section'
@@ -150,10 +150,9 @@ function ProductCollection({ products, state }) {
     return (
       <div className="collection-state">
         <h3>No featured cards yet</h3>
-        <p>Featured inventory will appear here. See the arrivals below.</p>
-        <a className="text-link" href="#new-arrivals">
-          See new arrivals
-        </a>
+        <Link className="text-link" to="/shop">
+          Browse cards
+        </Link>
       </div>
     )
   return (
@@ -177,10 +176,6 @@ export default function HomePage() {
   }, [refreshProducts])
   const featured = products
     .filter((product) => product.isActive !== false && product.isFeatured)
-    .slice(0, 4)
-  const arrivals = products
-    .filter((product) => product.isActive !== false)
-    .toSorted((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)))
     .slice(0, 4)
 
   useEffect(() => {
@@ -274,51 +269,6 @@ export default function HomePage() {
               Reload inventory
             </button>
           )}
-        </Section>
-        <Section
-          id="new-arrivals"
-          title="FRESH FINDS."
-          note="Recently added to the store collection."
-          action={
-            <Link className="text-link" to="/shop?sort=newest">
-              All arrivals
-              <Icon name="arrow" />
-            </Link>
-          }
-        >
-          <div className="arrivals-grid">
-            {arrivals.map((product) => (
-              <article className="arrival-card" key={product.id}>
-                <Link
-                  className="arrival-media"
-                  to={`/product/${product.slug}`}
-                  aria-label={`Preview ${product.name}`}
-                >
-                  <CardImage src={product.imageUrl} name={product.name} />
-                </Link>
-                <div className="arrival-info">
-                  <span className="arrival-label">
-                    New · {product.gameName}
-                  </span>
-                  <h3>
-                    <Link to={`/product/${product.slug}`}>{product.name}</Link>
-                  </h3>
-                  <p>{product.setName}</p>
-                  <p className="arrival-condition">
-                    {product.rarity} · {product.condition}
-                  </p>
-                  <div>
-                    <strong>{formatPrice(product.price)}</strong>
-                    <span className="stock">
-                      {product.stock
-                        ? `${product.stock} in stock`
-                        : 'Out of stock'}
-                    </span>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
         </Section>
         <section
           id="collector-notes"

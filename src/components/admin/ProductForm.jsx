@@ -120,9 +120,6 @@ export default function ProductForm({ initial, products, onSave, onCancel }) {
           </p>
         )}
         <div className="form-actions">
-          <button className="button button-primary" disabled={saving}>
-            {saving ? 'Saving...' : 'Save product'}
-          </button>
           <button
             type="button"
             className="button"
@@ -130,6 +127,9 @@ export default function ProductForm({ initial, products, onSave, onCancel }) {
             onClick={onCancel}
           >
             Cancel
+          </button>
+          <button className="button button-primary" disabled={saving}>
+            {saving ? 'Saving...' : 'Save product'}
           </button>
         </div>
         {message && (
