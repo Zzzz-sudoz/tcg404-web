@@ -19,7 +19,7 @@ api.interceptors.response.use((response) => {
       ...product,
       gameName:
         {
-          pokemon: 'Pokémon',
+          pokemon: 'Pokemon',
           'one-piece': 'One Piece',
           magic: 'Magic: The Gathering',
         }[product.game] || product.game,

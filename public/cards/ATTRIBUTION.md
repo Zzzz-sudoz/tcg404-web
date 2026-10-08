@@ -12,4 +12,4 @@ Bundled card imagery retains original publisher sample watermarks.
 | sanji.png | https://en.onepiece-cardgame.com/images/cardlist/card/OP06-119.png |
 | black-lotus.jpg | https://cards.scryfall.io/normal/front/b/d/bd8fa327-dd41-4737-8f19-2cf5eb1f7cdd.jpg |
 
-Pokémon artwork belongs to its respective owners, including Pokémon/Nintendo/Creatures/GAME FREAK. One Piece artwork belongs to its respective owners, including Eiichiro Oda/Shueisha/Toei Animation/Bandai. Magic artwork belongs to Wizards of the Coast and its artists. These images are representative assets for a local student prototype; ownership is not claimed by TCG404.
+Pokemon artwork belongs to its respective owners, including Pokemon/Nintendo/Creatures/GAME FREAK. One Piece artwork belongs to its respective owners, including Eiichiro Oda/Shueisha/Toei Animation/Bandai. Magic artwork belongs to Wizards of the Coast and its artists. These images are representative assets for a local student prototype; ownership is not claimed by TCG404.

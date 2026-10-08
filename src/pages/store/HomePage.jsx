@@ -45,7 +45,7 @@ function Hero() {
           </h1>
           <p>
             The chase. The artwork. That one missing single. Find your next
-            obsession across Pokémon, One Piece, and Magic.
+            obsession across Pokemon, One Piece, and Magic.
           </p>
           <div className="hero-actions">
             <Link className="button button-primary" to="/shop">
@@ -123,7 +123,7 @@ function Hero() {
       </section>
       <div className="collection-ribbon" aria-hidden="true">
         <span>NOT JUST CARDS. YOUR COLLECTION.</span>
-        <span>POKÉMON / ONE PIECE / MAGIC</span>
+        <span>POKEMON / ONE PIECE / MAGIC</span>
         <span>COLLECT. TRADE. DISCOVER.</span>
       </div>
     </div>
@@ -369,7 +369,7 @@ export default function HomePage() {
             <small>Full artwork. Consistent previews.</small>
           </span>
           <span>
-            Keep collecting.<small>Pokémon, One Piece, and Magic.</small>
+            Keep collecting.<small>Pokemon, One Piece, and Magic.</small>
           </span>
         </div>
       </div>
