@@ -1,3 +1,12 @@
+export const orderStatusLabel = (status) =>
+  ({
+    pending: 'Pending',
+    confirmed: 'Processing',
+    processing: 'Packaging',
+    shipped: 'Out for delivery',
+    completed: 'Completed',
+    cancelled: 'Cancelled',
+  })[status] || status
 export const orderStatuses = [
   'pending',
   'confirmed',

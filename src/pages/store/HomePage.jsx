@@ -267,9 +267,6 @@ export default function HomePage() {
             products={featured}
             state={loading ? 'loading' : error ? 'error' : ''}
           />
-          <p className="demo-disclaimer">
-            Store selling prices in PHP. Checkout remains a demonstration.
-          </p>
           {error && (
             <button className="button" onClick={() => refreshProducts()}>
               Reload inventory
@@ -305,9 +302,6 @@ export default function HomePage() {
                     <Link to={`/product/${product.slug}`}>{product.name}</Link>
                   </h3>
                   <p>{product.setName}</p>
-                  {product.source === 'demo-fallback' && (
-                    <p className="muted">Sample inventory · demo values</p>
-                  )}
                   <p className="arrival-condition">
                     {product.rarity} · {product.condition}
                   </p>

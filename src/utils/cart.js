@@ -97,14 +97,14 @@ export function addCartItem(cart, products, id, quantity) {
     product.isActive === false ||
     !Number.isSafeInteger(quantity) ||
     quantity < 1 ||
-    quantity + current > 999 ||
+    quantity + current > 10 ||
     (current === 0 && cart.length >= 50) ||
     !Number.isFinite(product.price) ||
     product.price < 0 ||
     !Number.isSafeInteger(product.stock) ||
     quantity + current > product.stock
   )
-    return { cart, error: 'That quantity is unavailable. Check current stock.' }
+    return { cart, error: 'Choose 1 to 10 per card, within available stock.' }
   return {
     cart: [
       ...cart.filter((p) => p.id !== id),
@@ -126,10 +126,11 @@ export function updateCartQuantity(cart, products, id, quantity) {
     product.isActive === false ||
     !Number.isSafeInteger(quantity) ||
     quantity < 1 ||
-    quantity > 999 ||
+    quantity > 10 ||
+    !Number.isSafeInteger(product.stock) ||
     quantity > product.stock
   )
-    return { cart, error: 'Choose a whole quantity within current stock.' }
+    return { cart, error: 'Choose 1 to 10 per card, within available stock.' }
   return {
     cart: cart.map((item) => (item.id === id ? { ...item, quantity } : item)),
     error: '',
@@ -183,8 +184,9 @@ export function summarizeCart(cart, products) {
         ? 'This card is unavailable.'
         : !quantity ||
             !Number.isSafeInteger(product.stock) ||
-            quantity > product.stock
-          ? 'Quantity exceeds available stock.'
+            quantity > product.stock ||
+            quantity > 10
+          ? 'Choose 1 to 10 per card, within available stock.'
           : !safePrice
             ? 'Current price is unavailable.'
             : ''

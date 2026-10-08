@@ -4,7 +4,11 @@ import { useApiQuery } from '../../hooks/useApiQuery'
 import { formatPrice } from '../../data/store'
 import Pagination from '../../components/common/Pagination'
 import QueryState from '../../components/common/QueryState'
-import { orderStatuses, validateDateRange } from '../../utils/operations'
+import {
+  orderStatuses,
+  validateDateRange,
+  orderStatusLabel,
+} from '../../utils/operations'
 import { paymentLabel, paymentMethodLabel } from '../../utils/checkout'
 
 export default function OrdersPage({ admin = false }) {
@@ -39,8 +43,7 @@ export default function OrdersPage({ admin = false }) {
           <p className="eyebrow">
             {admin ? 'COLLECTOR OPERATIONS' : 'YOUR ACCOUNT'}
           </p>
-          <h1>{admin ? 'Saved orders.' : 'Your order history.'}</h1>
-          {!admin && <p>Order totals and delivery details are recorded when you order.</p>}
+          <h1>{admin ? 'Order management.' : 'Your order history.'}</h1>
         </div>
         {!admin && (
           <Link className="button" to="/account">
@@ -68,7 +71,9 @@ export default function OrdersPage({ admin = false }) {
             <select name="status" defaultValue={params.get('status') || ''}>
               <option value="">All statuses</option>
               {orderStatuses.map((status) => (
-                <option key={status}>{status}</option>
+                <option key={status} value={status}>
+                  {orderStatusLabel(status)}
+                </option>
               ))}
             </select>
           </label>
@@ -148,12 +153,16 @@ export default function OrdersPage({ admin = false }) {
                     </td>
                     {admin && (
                       <td data-label="Customer" role="cell">
-                        {order.shipping.name}
-                        <small>{order.shipping.email}</small>
+                        {order.buyer?.name || order.shipping.name}
+                        <small>
+                          {order.buyer?.email || order.shipping.email}
+                        </small>
                       </td>
                     )}
                     <td data-label="Status" role="cell">
-                      <span className="status-chip">{order.status}</span>
+                      <span className="status-chip">
+                        {orderStatusLabel(order.status)}
+                      </span>
                     </td>
                     <td data-label="Payment" role="cell">
                       {paymentLabel(order)}

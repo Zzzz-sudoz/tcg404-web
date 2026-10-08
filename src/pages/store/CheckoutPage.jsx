@@ -1,3 +1,4 @@
+import { orderStatusLabel } from '../../utils/operations'
 import { useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { usePrototype } from '../../hooks/usePrototype'
@@ -125,7 +126,8 @@ export default function CheckoutPage() {
           </p>
           <h1>Your next finds, confirmed.</h1>
           <p>
-            Order status: <strong>{confirmation.status}</strong>. Payment
+            Order status:{' '}
+            <strong>{orderStatusLabel(confirmation.status)}</strong>. Payment
             status: <strong>{paymentLabel(confirmation)}</strong>.
           </p>
           <p>{paymentMethodLabel(confirmation.payment)}</p>

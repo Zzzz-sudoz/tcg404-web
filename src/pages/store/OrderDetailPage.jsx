@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router'
 import { useApiQuery } from '../../hooks/useApiQuery'
 import { api, apiError } from '../../utils/api'
 import { formatPrice } from '../../data/store'
-import { statusOptions } from '../../utils/operations'
+import { statusOptions, orderStatusLabel } from '../../utils/operations'
 import QueryState from '../../components/common/QueryState'
 import {
   paymentLabel,
@@ -61,13 +61,23 @@ export default function OrderDetailPage({ admin = false }) {
               <h1>{order.orderNumber}</h1>
               <p>
                 Created {new Date(order.createdAt).toLocaleString()} ·{' '}
-                <strong>{order.status}</strong> · Payment:{' '}
+                <strong>{orderStatusLabel(order.status)}</strong> · Payment:{' '}
                 <strong>{paymentLabel(order)}</strong>
               </p>
             </div>
           </header>
           <div className="commerce-layout">
             <section className="admin-panel">
+              {admin && (
+                <div className="order-buyer">
+                  <h2>Customer</h2>
+                  <p>
+                    {order.buyer?.name || order.shipping.name}
+                    <br />
+                    {order.buyer?.email || order.shipping.email}
+                  </p>
+                </div>
+              )}
               <h2>Ordered singles</h2>
               <p className="scroll-hint orders-scroll-hint">
                 Scroll horizontally for all columns. Keyboard: focus the table
@@ -146,11 +156,6 @@ export default function OrderDetailPage({ admin = false }) {
                   Reference: {order.payment.reference}
                 </p>
               )}
-              {admin && order.payment?.mode === 'demo' && (
-                <p className="muted">
-                  Demo approval · excluded from paid revenue
-                </p>
-              )}
               {admin && statusOptions(order.status).length > 0 && (
                 <form onSubmit={update}>
                   <h2>Update order status</h2>
@@ -158,7 +163,9 @@ export default function OrderDetailPage({ admin = false }) {
                     Next status
                     <select name="status" disabled={saving}>
                       {statusOptions(order.status).map((status) => (
-                        <option key={status}>{status}</option>
+                        <option key={status} value={status}>
+                          {orderStatusLabel(status)}
+                        </option>
                       ))}
                     </select>
                   </label>
