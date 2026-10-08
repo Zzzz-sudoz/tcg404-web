@@ -26,10 +26,10 @@ import './styles/workshop.css'
 
 export default function App() {
   return (
+    <BrowserRouter>
     <AuthProvider>
       <PrototypeProvider>
         <CartProvider>
-          <BrowserRouter>
             <Routes>
               <Route element={<StoreLayout />}>
                 <Route index element={<HomePage />} />
@@ -71,9 +71,9 @@ export default function App() {
                 </Route>
               </Route>
             </Routes>
-          </BrowserRouter>
         </CartProvider>
       </PrototypeProvider>
     </AuthProvider>
+    </BrowserRouter>
   )
 }
