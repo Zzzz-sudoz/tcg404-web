@@ -15,7 +15,7 @@
   gap: 6px;
 }
 .brand-tagline {
-  font-size: 0.62rem;
+  font-size: 0.7rem;
   color: var(--muted);
   font-weight: 500;
 }
@@ -82,7 +82,7 @@
   background: transparent;
   padding: 12px 0;
   color: var(--ink);
-  font-size: 0.85rem;
+  font-size: 0.95rem;
 }
 .global-search input::placeholder {
   color: var(--muted);
@@ -125,7 +125,7 @@
   gap: 8px;
   align-items: center;
   min-height: 44px;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 600;
 }
 .utility-link:hover {
@@ -165,7 +165,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.78rem;
+  font-size: 0.9rem;
   font-weight: 600;
   padding: 8px 0;
 }
