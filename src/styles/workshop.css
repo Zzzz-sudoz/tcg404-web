@@ -338,30 +338,27 @@ button:disabled {
   width: 80px;
 }
 .cart-remove {
+  grid-column: 1 / -1;
+  justify-self: end;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  min-width: 44px;
   min-height: 44px;
   max-width: 100%;
-  padding: 10px 14px;
-  border: 1px solid #b05b6b;
-  border-radius: 10px;
-  background: #3a2027;
-  color: #ffbdc6;
-  font-weight: 600;
+  padding: 12px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #ff8796;
   cursor: pointer;
-  transition:
-    background 160ms,
-    border-color 160ms;
 }
 .cart-remove:hover {
-  background: #542633;
-  border-color: #e79ca9;
-  color: #ffe7eb;
+  background: #ffffff08;
+  color: #ffb0ba;
 }
 .cart-remove:active {
-  background: #29191f;
+  background: #ffffff10;
 }
 .cart-remove svg {
   flex-shrink: 0;
