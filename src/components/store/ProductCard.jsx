@@ -15,7 +15,7 @@ export default function ProductCard({ product, quickAdd = false }) {
         : 'In stock'
 
   return (
-    <article className="product-card">
+    <article className={`product-card card-game-${product.game}`}>
       <Link
         className="product-media"
         to={`/product/${product.slug}`}

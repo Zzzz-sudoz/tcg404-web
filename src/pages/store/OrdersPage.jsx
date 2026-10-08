@@ -40,7 +40,7 @@ export default function OrdersPage({ admin = false }) {
             {admin ? 'COLLECTOR OPERATIONS' : 'YOUR ACCOUNT'}
           </p>
           <h1>{admin ? 'Saved orders.' : 'Your order history.'}</h1>
-          <p>Order totals and delivery details are recorded when you order.</p>
+          {!admin && <p>Order totals and delivery details are recorded when you order.</p>}
         </div>
         {!admin && (
           <Link className="button" to="/account">

@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router'
 import Icon from '../components/common/Icon'
-import Dialog from '../components/common/Dialog'
+import SignOutButton from '../components/common/SignOutButton'
 import { usePrototype } from '../hooks/usePrototype'
 import { useAuth } from '../hooks/useAuth'
-import { apiError } from '../utils/api'
 
 function Brand() {
   return (
@@ -17,11 +16,8 @@ function Brand() {
 
 function StoreHeader() {
   const { cart, persistenceNotice } = usePrototype()
-  const { user, logout } = useAuth()
-  const [authError, setAuthError] = useState('')
-  const [signoutOpen, setSignoutOpen] = useState(false)
-  const [signingOut, setSigningOut] = useState(false)
-  const logoutPending = useRef(false)
+  const { user } = useAuth()
+  const isAdmin = user?.role === 'admin'
   const count = cart.reduce((sum, line) => sum + line.quantity, 0)
   const [search, setSearch] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
@@ -37,23 +33,6 @@ function StoreHeader() {
 
   function closeMenu() {
     setMenuOpen(false)
-  }
-
-  async function confirmSignout() {
-    if (logoutPending.current) return
-    logoutPending.current = true
-    setSigningOut(true)
-    setAuthError('')
-    try {
-      await logout()
-      setSignoutOpen(false)
-      closeMenu()
-    } catch (error) {
-      setAuthError(apiError(error))
-    } finally {
-      logoutPending.current = false
-      setSigningOut(false)
-    }
   }
 
   function handleMenuKey(event) {
@@ -94,37 +73,30 @@ function StoreHeader() {
           </button>
         </form>
         <div className="header-actions">
-          <div className={`header-account ${user ? 'is-signed-in' : ''}`}>
+          <div
+            className={`header-account ${user ? 'is-signed-in' : ''} ${isAdmin ? 'is-admin' : ''}`}
+          >
             <Link
               className="utility-link account-link"
-              to={user ? '/account' : '/login'}
+              to={isAdmin ? '/admin' : user ? '/account' : '/login'}
               onClick={closeMenu}
             >
               <Icon name="user" />
-              <span>{user?.name || 'Account'}</span>
+              <span>
+                {isAdmin ? 'Admin workspace' : user?.name || 'Account'}
+              </span>
             </Link>
-            {user && (
-              <button
-                className="signout-trigger"
-                type="button"
-                aria-haspopup="dialog"
-                onClick={() => {
-                  setAuthError('')
-                  setSignoutOpen(true)
-                }}
-              >
-                <Icon name="arrow" />
-                Sign out
-              </button>
-            )}
+            {user && !isAdmin && <SignOutButton onSignedOut={closeMenu} />}
           </div>
-          <Link className="utility-link" to="/cart" onClick={closeMenu}>
-            <Icon name="bag" />
-            <span>Cart</span>
-            <span className="cart-count" aria-label={`${count} items`}>
-              {count}
-            </span>
-          </Link>
+          {!isAdmin && (
+            <Link className="utility-link" to="/cart" onClick={closeMenu}>
+              <Icon name="bag" />
+              <span>Cart</span>
+              <span className="cart-count" aria-label={`${count} items`}>
+                {count}
+              </span>
+            </Link>
+          )}
           <button
             ref={menuButton}
             className="menu-button"
@@ -138,36 +110,6 @@ function StoreHeader() {
           </button>
         </div>
       </div>
-      <Dialog
-        open={signoutOpen}
-        onClose={() => setSignoutOpen(false)}
-        labelledBy="signout-title"
-        className="signout-dialog"
-        cancelLabel="Stay signed in"
-        busy={signingOut}
-        focusCancel
-      >
-        <div className="signout-emblem" aria-hidden="true">
-          <Icon name="cards" />
-        </div>
-        <span className="eyebrow">TCG404 / YOUR ACCOUNT</span>
-        <h2 id="signout-title">Signing off?</h2>
-        <p>
-          Are you sure you want to sign out? Your collection will be here when
-          you return.
-        </p>
-        {authError && (
-          <p className="field-error" role="alert">{authError}</p>
-        )}
-        <button
-          className="button button-primary signout-confirm"
-          onClick={confirmSignout}
-          disabled={signingOut}
-        >
-          {signingOut ? 'Signing out…' : 'Sign out'}
-          <Icon name="arrow" />
-        </button>
-      </Dialog>
       {persistenceNotice && (
         <p className="page-width persistence-notice" role="status">
           {persistenceNotice}
@@ -202,14 +144,9 @@ function StoreHeader() {
             New arrivals
             <Icon name="arrow" />
           </Link>
-          {user?.role === 'admin' && (
-            <NavLink to="/admin" onClick={closeMenu}>
-              Admin workspace
-            </NavLink>
-          )}
           <Link
             className="mobile-account"
-            to={user ? '/account' : '/login'}
+            to={isAdmin ? '/admin' : user ? '/account' : '/login'}
             onClick={closeMenu}
           >
             {user?.name || 'Account'}
@@ -238,7 +175,6 @@ function StoreFooter() {
           <Link to="/shop">Shop singles</Link>
           <Link to="/#shop-by-game">Shop by game</Link>
           <Link to="/#collector-notes">Collector notes</Link>
-          <Link to="/admin">Admin workspace</Link>
         </nav>
         <div className="footer-statement">
           <span>Collect. Trade. Discover.</span>
@@ -247,9 +183,7 @@ function StoreFooter() {
       </div>
       <div className="page-width footer-bottom">
         <span>© 2026 TCG404</span>
-        <span>
-          Your next great find. From our collection to yours.
-        </span>
+        <span>Your next great find. From our collection to yours.</span>
       </div>
     </footer>
   )

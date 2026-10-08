@@ -209,11 +209,6 @@ export default function AdminInventoryPage({ movements = false }) {
           <h1>
             {movements ? 'Inventory movements.' : 'Stock, on the record.'}
           </h1>
-          <p>
-            {movements
-              ? 'Saved adjustments, sales and cancellations. Historical inventory has no fabricated movement history.'
-              : 'Save absolute stock and alert thresholds together. Stale edits cannot overwrite a sale.'}
-          </p>
         </div>
         <Link
           className="button"

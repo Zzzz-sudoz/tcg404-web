@@ -1,5 +1,33 @@
 export default function Icon({ name, ...props }) {
   const paths = {
+    overview: (
+      <>
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" />
+        <rect x="14" y="14" width="7" height="7" rx="1" />
+      </>
+    ),
+    import: (
+      <>
+        <path d="M12 3v12m-4-4 4 4 4-4M4 15v6h16v-6" />
+      </>
+    ),
+    analytics: (
+      <>
+        <path d="M4 3v18h17M8 16v-4m5 4V7m5 9V4" />
+      </>
+    ),
+    inventory: (
+      <>
+        <path d="m12 3 9 5v9l-9 5-9-5V8l9-5Zm-9 5 9 5 9-5m-9 5v9M7.5 5.5l9 5" />
+      </>
+    ),
+    logout: (
+      <>
+        <path d="M9 4H4v16h5m0-8h12m-4-4 4 4-4 4" />
+      </>
+    ),
     search: (
       <>
         <circle cx="10.5" cy="10.5" r="6.5" />

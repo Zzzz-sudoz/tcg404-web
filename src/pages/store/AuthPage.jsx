@@ -1,14 +1,14 @@
 import { useState } from 'react'
-import { Link, useNavigate, useSearchParams } from 'react-router'
+import { Link, Navigate, useNavigate, useSearchParams } from 'react-router'
 import { useAuth } from '../../hooks/useAuth'
 import { apiError, apiFields } from '../../utils/api'
-import { safeReturnTo } from '../../utils/auth'
+import { safeReturnTo, loginDestination } from '../../utils/auth'
 export default function AuthPage({ register = false }) {
   const [values, setValues] = useState({ name: '', email: '', password: '' })
   const [errors, setErrors] = useState({})
   const [message, setMessage] = useState('')
   const [saving, setSaving] = useState(false)
-  const { authenticate } = useAuth()
+  const { authenticate, user } = useAuth()
   const [params] = useSearchParams()
   const navigate = useNavigate()
   const returnTo = safeReturnTo(params.get('returnTo'))
@@ -18,11 +18,11 @@ export default function AuthPage({ register = false }) {
     setErrors({})
     setMessage('')
     try {
-      await authenticate(
+      const authenticated = await authenticate(
         register ? 'register' : 'login',
         register ? values : { email: values.email, password: values.password },
       )
-      navigate(returnTo, { replace: true })
+      navigate(loginDestination(authenticated, returnTo), { replace: true })
     } catch (error) {
       setErrors(apiFields(error))
       setMessage(apiError(error))
@@ -30,6 +30,7 @@ export default function AuthPage({ register = false }) {
       setSaving(false)
     }
   }
+  if (user?.role === 'admin') return <Navigate to="/admin" replace />
   return (
     <div className="page-width workshop-page auth-page">
       <header className="page-intro">
