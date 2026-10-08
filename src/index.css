@@ -20,6 +20,7 @@
   src: url('/fonts/barlow-2.ttf') format('truetype');
 }
 :root {
+  font-size: 106.25%;
   font-family: 'Segoe UI', Arial, sans-serif;
   color: #f6f3ea;
   background: #15161b;
