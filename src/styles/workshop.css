@@ -401,6 +401,15 @@ button:disabled {
   color: var(--muted);
   font-size: 0.9rem;
 }
+.cart-continue {
+  justify-self: center;
+  text-align: center;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.cart-continue:hover {
+  color: var(--accent);
+}
 .editor-panel {
   display: grid;
   gap: 22px;

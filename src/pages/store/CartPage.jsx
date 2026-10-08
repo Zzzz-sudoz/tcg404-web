@@ -156,7 +156,7 @@ export default function CartPage() {
                     : 'Resolve unavailable quantities before checkout.'}
               </p>
             )}
-            <Link className="text-link" to="/shop">
+            <Link className="text-link cart-continue" to="/shop">
               Continue collecting
             </Link>
             <p className="prototype-note">
