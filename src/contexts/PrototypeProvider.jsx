@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
+import { useLocation } from 'react-router'
 import { PrototypeContext } from './PrototypeContext'
 import { api, apiError } from '../utils/api'
 import { games } from '../data/store'
 import { mergeInventory } from '../utils/inventory'
 export default function PrototypeProvider({ children }) {
+  const { pathname } = useLocation()
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -45,13 +47,14 @@ export default function PrototypeProvider({ children }) {
     [rememberProducts],
   )
   useEffect(() => {
+    if (pathname !== '/') return
     const controller = new AbortController()
     const timer = setTimeout(() => refreshProducts(controller.signal), 0)
     return () => {
       clearTimeout(timer)
       controller.abort()
     }
-  }, [refreshProducts])
+  }, [refreshProducts, pathname])
   const upsertProduct = async (product) => {
     const allowed = [
       'name',
