@@ -1,12 +1,8 @@
 import { Link } from 'react-router'
-import { useState } from 'react'
-import { usePrototype } from '../../hooks/usePrototype'
 import { formatPrice } from '../../data/store'
 import CardImage from './CardImage'
 
 export default function ProductCard({ product, quickAdd = false }) {
-  const { addToCart } = usePrototype()
-  const [message, setMessage] = useState('')
   const stockLabel =
     product.stock === 0
       ? 'Out of stock'
@@ -43,22 +39,16 @@ export default function ProductCard({ product, quickAdd = false }) {
           Preview<span className="sr-only"> {product.name}</span>
         </Link>
       </div>
-      {quickAdd && (
-        <>
-          <button
-            className="button quick-add"
-            disabled={!product.stock}
-            onClick={() =>
-              setMessage(addToCart(product.id, 1) || 'Added to your cart.')
-            }
-          >
-            {product.stock ? 'Add to cart' : 'Out of stock'}
+      {quickAdd &&
+        (product.stock ? (
+          <Link className="button quick-add" to={`/product/${product.slug}`}>
+            Add to cart
+          </Link>
+        ) : (
+          <button className="button quick-add" disabled>
+            Out of stock
           </button>
-          <span className="feedback" role="status">
-            {message}
-          </span>
-        </>
-      )}
+        ))}
     </article>
   )
 }

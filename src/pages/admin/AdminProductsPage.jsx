@@ -36,7 +36,11 @@ export default function AdminProductsPage() {
           <h1>Every single, accounted for.</h1>
         </div>
         <div className="form-actions">
-          <Link className="button" to="/admin/card-import">
+          <Link
+            className="button"
+            to="/admin/card-import"
+            style={{ display: 'none' }}
+          >
             Import cards
           </Link>
           <Link className="button button-primary" to="/admin/products/new">

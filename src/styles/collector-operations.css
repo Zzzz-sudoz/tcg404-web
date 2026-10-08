@@ -27,6 +27,18 @@ dialog.signout-dialog {
 .signout-dialog h2 {
   font-size: 2rem;
   max-width: 17ch;
+  margin: 0 auto 12px;
+  text-align: center;
+  line-height: 1.2;
+}
+.signout-dialog .signout-confirm {
+  color: #fff;
+  border-color: #b73535;
+  background: #b73535;
+}
+.signout-dialog .signout-confirm:hover {
+  border-color: #c23b3b;
+  background: #c23b3b;
 }
 .admin-workspace {
   min-width: 0;
@@ -659,4 +671,77 @@ dialog.signout-dialog {
 }
 .account-panels .auth-form {
   max-width: none;
+}
+.editor-panel > .form-actions {
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 10px;
+}
+.product-editor .form-actions {
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid #ffffff14;
+}
+.editor-panel:not(.auth-form) > .button-primary {
+  justify-self: center;
+  margin-top: 10px;
+  max-width: 100%;
+}
+.order-summary > .button {
+  justify-self: center;
+  max-width: 100%;
+  margin-top: 8px;
+}
+.order-status-form {
+  display: grid;
+  gap: 20px;
+  padding-top: 28px;
+  margin-top: 8px;
+  border-top: 1px solid #ffffff18;
+}
+.order-status-form h2 {
+  margin: 0;
+  line-height: 1.2;
+}
+.order-status-form > .button {
+  justify-self: center;
+  margin-top: 8px;
+}
+.receipt-page > .text-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.receipt-page .admin-heading {
+  margin-bottom: 32px;
+}
+.receipt-page .admin-heading h1 {
+  overflow-wrap: anywhere;
+}
+.receipt-page .order-buyer {
+  margin-bottom: 32px;
+}
+.receipt-page .admin-panel > h2:not(:first-child) {
+  margin-top: 32px;
+}
+.receipt-page .admin-panel h2 {
+  margin-bottom: 16px;
+}
+.receipt-page .admin-panel p {
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.receipt-page .admin-panel p + p {
+  margin-top: 8px;
+}
+.receipt-page .table-scroll {
+  margin-block: 20px 28px;
+}
+.receipt-page .order-summary > h2:not(:first-child) {
+  margin-top: 12px;
+}
+.receipt-page .order-summary .field-error:empty {
+  display: none;
 }

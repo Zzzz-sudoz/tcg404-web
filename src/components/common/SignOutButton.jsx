@@ -63,7 +63,6 @@ export default function SignOutButton({ onSignedOut }) {
           onClick={confirm}
         >
           {busy ? 'Logging out…' : 'Logout'}
-          <Icon name="logout" />
         </button>
       </Dialog>
     </>

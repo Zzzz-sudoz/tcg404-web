@@ -2,24 +2,30 @@ export const orderStatusLabel = (status) =>
   ({
     pending: 'Pending',
     confirmed: 'Processing',
-    processing: 'Packaging',
-    shipped: 'Out for delivery',
+    processing: 'Processing',
+    shipped: 'To be delivered',
     completed: 'Completed',
-    cancelled: 'Cancelled',
+    cancelled: 'Canceled',
+    delayed: 'Delayed',
   })[status] || status
 export const orderStatuses = [
   'pending',
-  'confirmed',
   'processing',
   'shipped',
   'completed',
   'cancelled',
+  'delayed',
 ]
 export function statusOptions(status) {
-  const index = orderStatuses.indexOf(status)
-  return index < 0 || index >= 4
-    ? []
-    : [orderStatuses[index + 1], ...(index <= 2 ? ['cancelled'] : [])]
+  return (
+    {
+      pending: ['processing', 'shipped', 'cancelled', 'delayed'],
+      confirmed: ['processing', 'shipped', 'cancelled', 'delayed'],
+      processing: ['shipped', 'cancelled', 'delayed'],
+      shipped: ['completed', 'cancelled', 'delayed'],
+      delayed: ['processing', 'shipped', 'cancelled'],
+    }[status] || []
+  )
 }
 export function validateStock(stock, lowStockThreshold) {
   return Object.fromEntries(

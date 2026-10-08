@@ -31,7 +31,12 @@ export default function AdminLayout() {
             ['/analytics', 'Analytics', 'analytics'],
             ['/inventory', 'Inventory', 'inventory'],
           ].map(([path, label, icon]) => (
-            <NavLink key={label} end={path === ''} to={`/admin${path}`}>
+            <NavLink
+              key={label}
+              end={path === ''}
+              to={`/admin${path}`}
+              style={path === '/card-import' ? { display: 'none' } : undefined}
+            >
               <Icon name={icon} />
               {label}
             </NavLink>
