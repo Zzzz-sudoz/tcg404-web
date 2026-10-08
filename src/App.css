@@ -1,0 +1,29 @@
+#root {
+  isolation: isolate;
+}
+#root::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: url('/surface-grain.svg') repeat;
+  opacity: 0.24;
+}
+.brand-intro {
+  display: grid;
+  align-content: center;
+  gap: 16px;
+  min-height: 100svh;
+  padding-block: 48px;
+}
+.brand-intro h1 {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 10vw, 6rem);
+}
+.brand-intro h1 span {
+  color: var(--accent);
+}
+.brand-intro p {
+  color: var(--muted);
+}
