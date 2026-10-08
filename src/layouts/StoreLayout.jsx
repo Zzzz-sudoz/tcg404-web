@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router'
 import Icon from '../components/common/Icon'
+import { usePrototype } from '../hooks/usePrototype'
 
 function Brand() {
   return (
@@ -12,8 +13,8 @@ function Brand() {
 }
 
 function StoreHeader() {
-  const persistenceNotice = ''
-  const count = 0
+  const { cart, persistenceNotice } = usePrototype()
+  const count = cart.reduce((sum, line) => sum + line.quantity, 0)
   const [search, setSearch] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
   const menuButton = useRef(null)
