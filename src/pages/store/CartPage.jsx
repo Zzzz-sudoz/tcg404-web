@@ -122,17 +122,16 @@ export default function CartPage() {
                       {line.reason}
                     </p>
                   )}
-                  <button
-                    type="button"
-                    className="cart-remove"
-                    aria-label={`Remove ${line.product?.name || 'card'} from cart`}
-                    onClick={() => removeFromCart(line.id)}
-                  >
-                    <Icon name="trash" />
-                    Remove
-                  </button>
                 </div>
                 <strong>{formatPrice(line.total)}</strong>
+                <button
+                  type="button"
+                  className="cart-remove"
+                  aria-label={`Remove ${line.product?.name || 'card'} from cart`}
+                  onClick={() => removeFromCart(line.id)}
+                >
+                  <Icon name="trash" />
+                </button>
               </article>
             ))}
           </section>
