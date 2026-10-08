@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router'
 import Icon from '../components/common/Icon'
 import { usePrototype } from '../hooks/usePrototype'
+import { useAuth } from '../hooks/useAuth'
+import { apiError } from '../utils/api'
 
 function Brand() {
   return (
@@ -14,6 +16,8 @@ function Brand() {
 
 function StoreHeader() {
   const { cart, persistenceNotice } = usePrototype()
+  const { user, logout } = useAuth()
+  const [authError, setAuthError] = useState('')
   const count = cart.reduce((sum, line) => sum + line.quantity, 0)
   const [search, setSearch] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
@@ -71,12 +75,27 @@ function StoreHeader() {
         <div className="header-actions">
           <Link
             className="utility-link account-link"
-            to="/login"
+            to={user ? '/account' : '/login'}
             onClick={closeMenu}
           >
             <Icon name="user" />
-            <span>Account</span>
+            <span>{user?.name || 'Account'}</span>
           </Link>
+          {user && (
+            <button
+              className="text-link"
+              onClick={async () => {
+                try {
+                  await logout()
+                  closeMenu()
+                } catch (e) {
+                  setAuthError(apiError(e))
+                }
+              }}
+            >
+              Sign out
+            </button>
+          )}
           <Link className="utility-link" to="/cart" onClick={closeMenu}>
             <Icon name="bag" />
             <span>Cart</span>
@@ -97,6 +116,11 @@ function StoreHeader() {
           </button>
         </div>
       </div>
+      {authError && (
+        <p className="page-width field-error" role="alert">
+          {authError}
+        </p>
+      )}
       {persistenceNotice && (
         <p className="page-width persistence-notice" role="status">
           {persistenceNotice}
@@ -131,12 +155,17 @@ function StoreHeader() {
             New arrivals
             <Icon name="arrow" />
           </Link>
+          {user?.role === 'admin' && (
+            <NavLink to="/admin" onClick={closeMenu}>
+              Admin workspace
+            </NavLink>
+          )}
           <Link
             className="mobile-account"
-            to="/login"
+            to={user ? '/account' : '/login'}
             onClick={closeMenu}
           >
-            Account
+            {user?.name || 'Account'}
           </Link>
         </nav>
       </div>
