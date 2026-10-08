@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router'
 import Icon from '../components/common/Icon'
+import Dialog from '../components/common/Dialog'
 import { usePrototype } from '../hooks/usePrototype'
 import { useAuth } from '../hooks/useAuth'
 import { apiError } from '../utils/api'
@@ -18,6 +19,9 @@ function StoreHeader() {
   const { cart, persistenceNotice } = usePrototype()
   const { user, logout } = useAuth()
   const [authError, setAuthError] = useState('')
+  const [signoutOpen, setSignoutOpen] = useState(false)
+  const [signingOut, setSigningOut] = useState(false)
+  const logoutPending = useRef(false)
   const count = cart.reduce((sum, line) => sum + line.quantity, 0)
   const [search, setSearch] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
@@ -33,6 +37,23 @@ function StoreHeader() {
 
   function closeMenu() {
     setMenuOpen(false)
+  }
+
+  async function confirmSignout() {
+    if (logoutPending.current) return
+    logoutPending.current = true
+    setSigningOut(true)
+    setAuthError('')
+    try {
+      await logout()
+      setSignoutOpen(false)
+      closeMenu()
+    } catch (error) {
+      setAuthError(apiError(error))
+    } finally {
+      logoutPending.current = false
+      setSigningOut(false)
+    }
   }
 
   function handleMenuKey(event) {
@@ -73,29 +94,30 @@ function StoreHeader() {
           </button>
         </form>
         <div className="header-actions">
-          <Link
-            className="utility-link account-link"
-            to={user ? '/account' : '/login'}
-            onClick={closeMenu}
-          >
-            <Icon name="user" />
-            <span>{user?.name || 'Account'}</span>
-          </Link>
-          {user && (
-            <button
-              className="text-link"
-              onClick={async () => {
-                try {
-                  await logout()
-                  closeMenu()
-                } catch (e) {
-                  setAuthError(apiError(e))
-                }
-              }}
+          <div className={`header-account ${user ? 'is-signed-in' : ''}`}>
+            <Link
+              className="utility-link account-link"
+              to={user ? '/account' : '/login'}
+              onClick={closeMenu}
             >
-              Sign out
-            </button>
-          )}
+              <Icon name="user" />
+              <span>{user?.name || 'Account'}</span>
+            </Link>
+            {user && (
+              <button
+                className="signout-trigger"
+                type="button"
+                aria-haspopup="dialog"
+                onClick={() => {
+                  setAuthError('')
+                  setSignoutOpen(true)
+                }}
+              >
+                <Icon name="arrow" />
+                Sign out
+              </button>
+            )}
+          </div>
           <Link className="utility-link" to="/cart" onClick={closeMenu}>
             <Icon name="bag" />
             <span>Cart</span>
@@ -116,11 +138,36 @@ function StoreHeader() {
           </button>
         </div>
       </div>
-      {authError && (
-        <p className="page-width field-error" role="alert">
-          {authError}
+      <Dialog
+        open={signoutOpen}
+        onClose={() => setSignoutOpen(false)}
+        labelledBy="signout-title"
+        className="signout-dialog"
+        cancelLabel="Stay signed in"
+        busy={signingOut}
+        focusCancel
+      >
+        <div className="signout-emblem" aria-hidden="true">
+          <Icon name="cards" />
+        </div>
+        <span className="eyebrow">TCG404 / YOUR ACCOUNT</span>
+        <h2 id="signout-title">Signing off?</h2>
+        <p>
+          Are you sure you want to sign out? Your collection will be here when
+          you return.
         </p>
-      )}
+        {authError && (
+          <p className="field-error" role="alert">{authError}</p>
+        )}
+        <button
+          className="button button-primary signout-confirm"
+          onClick={confirmSignout}
+          disabled={signingOut}
+        >
+          {signingOut ? 'Signing out…' : 'Sign out'}
+          <Icon name="arrow" />
+        </button>
+      </Dialog>
       {persistenceNotice && (
         <p className="page-width persistence-notice" role="status">
           {persistenceNotice}
