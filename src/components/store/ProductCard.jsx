@@ -33,9 +33,6 @@ export default function ProductCard({ product, quickAdd = false }) {
       <h3>
         <Link to={`/product/${product.slug}`}>{product.name}</Link>
       </h3>
-      {product.source === 'demo-fallback' && (
-        <p className="muted">Sample inventory · demo price and stock</p>
-      )}
       <p className="product-set">{product.setName}</p>
       <p className="product-condition">
         {product.rarity} · {product.condition}

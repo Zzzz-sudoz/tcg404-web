@@ -495,3 +495,168 @@ dialog.signout-dialog {
     height: 36px;
   }
 }
+
+.header-account.is-admin {
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+.header-account.is-admin .account-link {
+  min-height: 40px;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  gap: 8px;
+}
+.header-account.is-admin .account-link svg {
+  width: 18px;
+  height: 18px;
+}
+.product-card {
+  background:
+    linear-gradient(115deg, rgba(var(--card-tint), 0.18), transparent 38%),
+    linear-gradient(
+      120deg,
+      transparent 36%,
+      #ffffff0b 36%,
+      #ffffff03 52%,
+      transparent 52%
+    ),
+    #1c1d23d9;
+  backdrop-filter: blur(16px);
+  box-shadow:
+    inset 0 1px #ffffff26,
+    0 18px 40px #00000024;
+}
+.product-card .product-media {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--card-tint), 0.1),
+    #ffffff03 55%
+  );
+}
+.add-cart-form {
+  margin-bottom: 24px;
+  gap: 16px;
+}
+.detail-copy > [role='status']:empty {
+  display: none;
+}
+.quick-add {
+  margin-top: 16px;
+}
+.product-card .feedback {
+  margin-top: 10px;
+}
+.account-panels {
+  display: grid;
+  gap: 24px;
+  width: 100%;
+}
+.account-panels .auth-form {
+  width: 100%;
+  margin: 0;
+}
+.auth-form .password-checks {
+  padding: 16px;
+  margin: 4px 0 0;
+  list-style: none;
+  background: #ffffff04;
+  border: 1px solid #ffffff12;
+  border-radius: 12px;
+  display: grid;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+.password-checks li {
+  display: flex;
+  gap: 10px;
+  color: var(--muted);
+}
+.password-checks li.is-valid,
+.field-success {
+  color: #9ee0c7;
+}
+.auth-form input[aria-invalid='true'] {
+  border-color: #f5a698;
+}
+.auth-form > .field-error:empty {
+  display: none;
+}
+.chart-scroll {
+  overflow-x: auto;
+  width: 100%;
+}
+.chart-scroll .sales-chart {
+  display: block;
+  width: 100%;
+  min-width: 620px;
+  max-width: none;
+  height: auto;
+  max-height: none;
+  margin: 24px 0 0;
+}
+.chart-scroll .sales-chart text {
+  font:
+    14px 'Segoe UI',
+    sans-serif;
+  fill: #cccbd4;
+}
+.sales-bar {
+  fill: #f4da81;
+}
+.sales-bar:hover {
+  fill: #fff0b9;
+}
+.chart-scroll .chart-paid {
+  stroke-width: 3;
+}
+.chart-guide {
+  stroke: #ffffff1c;
+  stroke-dasharray: 3 5;
+}
+.chart-ranges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 24px;
+}
+.chart-ranges .button {
+  min-height: 36px;
+  font-size: 0.85rem;
+  padding: 6px 16px;
+}
+.analytics-panel .forecast-chart {
+  width: 100%;
+  max-width: none;
+}
+@media (min-width: 1000px) {
+  .account-panels {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+  .auth-page:has(.account-panels) {
+    max-width: 1040px;
+  }
+}
+@media (max-width: 540px) {
+  .header-account.is-admin .account-link {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+  .chart-scroll .sales-chart {
+    min-width: 600px;
+  }
+  .account-panels {
+    gap: 16px;
+  }
+}
+
+.forecast-panel .forecast-chart {
+  max-height: none;
+  width: 100%;
+  margin-block: 24px;
+}
+.account-panels .auth-form {
+  max-width: none;
+}

@@ -5,7 +5,7 @@ export default function SavedReference({ product }) {
   return (
     <div className="import-notice">
       <strong>
-        Saved market reference: {reference.price} {reference.currency}
+        Market reference: {reference.price} {reference.currency}
       </strong>
       <p>
         {reference.condition && `Reference condition: ${reference.condition}. `}
@@ -13,9 +13,7 @@ export default function SavedReference({ product }) {
         {reference.source ? `Source: ${reference.source}. ` : ''}
         {date && !Number.isNaN(date.getTime())
           ? `Provider date: ${date.toLocaleDateString('en-PH')}. `
-          : 'Provider date unavailable. '}
-        This snapshot is separate from the PHP selling price. No automatic
-        refresh.
+          : ''}
       </p>
     </div>
   )

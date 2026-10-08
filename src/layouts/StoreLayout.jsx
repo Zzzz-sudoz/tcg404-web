@@ -73,6 +73,15 @@ function StoreHeader() {
           </button>
         </form>
         <div className="header-actions">
+          {!isAdmin && (
+            <Link className="utility-link" to="/cart" onClick={closeMenu}>
+              <Icon name="bag" />
+              <span>Cart</span>
+              <span className="cart-count" aria-label={`${count} items`}>
+                {count}
+              </span>
+            </Link>
+          )}
           <div
             className={`header-account ${user ? 'is-signed-in' : ''} ${isAdmin ? 'is-admin' : ''}`}
           >
@@ -88,15 +97,6 @@ function StoreHeader() {
             </Link>
             {user && !isAdmin && <SignOutButton onSignedOut={closeMenu} />}
           </div>
-          {!isAdmin && (
-            <Link className="utility-link" to="/cart" onClick={closeMenu}>
-              <Icon name="bag" />
-              <span>Cart</span>
-              <span className="cart-count" aria-label={`${count} items`}>
-                {count}
-              </span>
-            </Link>
-          )}
           <button
             ref={menuButton}
             className="menu-button"

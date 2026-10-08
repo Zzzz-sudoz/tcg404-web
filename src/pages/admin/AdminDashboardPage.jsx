@@ -3,15 +3,21 @@ import { useState } from 'react'
 import { Link, useLocation, useSearchParams } from 'react-router'
 import { formatPrice, games } from '../../data/store'
 import { useApiQuery } from '../../hooks/useApiQuery'
-import { chartPoints, validateDateRange } from '../../utils/operations'
+import {
+  chartPoints,
+  validateDateRange,
+  orderStatusLabel,
+} from '../../utils/operations'
 import QueryState from '../../components/common/QueryState'
 
 function InsightList({ products, type }) {
   return (
     <ul className="insight-list">
-      {products.map(product => (
+      {products.map((product) => (
         <li key={product.productId}>
-          <Link to={`/admin/inventory?search=${encodeURIComponent(product.name)}`}>
+          <Link
+            to={`/admin/inventory?search=${encodeURIComponent(product.name)}`}
+          >
             {product.name}
           </Link>
           <small>
@@ -119,7 +125,10 @@ function ForecastPanel() {
             {data.insights[key].length > 4 && (
               <details>
                 <summary>{data.insights[key].length - 4} more singles</summary>
-                <InsightList products={data.insights[key].slice(4)} type={key} />
+                <InsightList
+                  products={data.insights[key].slice(4)}
+                  type={key}
+                />
               </details>
             )}
           </div>
@@ -151,43 +160,87 @@ function SalesChart({ data }) {
           <span>Paid revenue</span>
         </div>
       </div>
-      <svg
-        className={`sales-chart ${data.trend.some((day) => day.orderValue || day.revenue) ? '' : 'is-empty'}`}
-        viewBox="0 0 400 190"
-        role="img"
-        aria-label="Daily completed order value and paid revenue. Exact values are available below."
+      <div
+        className="chart-scroll"
+        tabIndex={0}
+        role="region"
+        aria-label="Daily sales chart"
       >
-        <line x1="24" y1="156" x2="376" y2="156" className="chart-axis" />
-        <line x1="24" y1="90" x2="376" y2="90" className="chart-guide" />
-        <line x1="24" y1="24" x2="376" y2="24" className="chart-guide" />
-        <text x="24" y="16">
-          {formatPrice(maximum)}
-        </text>
-        <text x="24" y="180">
-          {data.trend[0]?.date}
-        </text>
-        <text x="376" y="180" textAnchor="end">
-          {data.trend.at(-1)?.date}
-        </text>
-        <polyline
-          points={chartPoints(
-            data.trend.map((day) => ({ value: day.orderValue })),
-            0,
-            data.trend.length,
-            maximum,
-          )}
-          className="chart-observed"
-        />
-        <polyline
-          points={chartPoints(
-            data.trend.map((day) => ({ value: day.revenue })),
-            0,
-            data.trend.length,
-            maximum,
-          )}
-          className="chart-paid"
-        />
-      </svg>
+        <svg
+          className="sales-chart"
+          viewBox="0 0 1000 360"
+          role="img"
+          aria-label="Daily completed value bars and paid revenue line. Exact values below."
+        >
+          {[0, 1, 2, 3, 4].map((tick) => (
+            <g key={tick}>
+              <line
+                x1="100"
+                y1={300 - tick * 65}
+                x2="975"
+                y2={300 - tick * 65}
+                className="chart-guide"
+              />
+              <text x="84" y={305 - tick * 65} textAnchor="end">
+                {formatPrice((maximum * tick) / 4)}
+              </text>
+            </g>
+          ))}
+          {data.trend.map((day, index) => {
+            const width = 875 / Math.max(1, data.trend.length)
+            const height = (day.orderValue / maximum) * 260
+            return (
+              <rect
+                key={day.date}
+                x={100 + index * width + width * 0.2}
+                y={300 - height}
+                width={width * 0.6}
+                height={height}
+                rx="2"
+                className="sales-bar"
+              >
+                <title>
+                  {day.date}: {formatPrice(day.orderValue)}
+                </title>
+              </rect>
+            )
+          })}
+          <polyline
+            className="chart-paid"
+            points={data.trend
+              .map(
+                (day, index) =>
+                  100 +
+                  ((index + 0.5) * 875) / Math.max(1, data.trend.length) +
+                  ',' +
+                  (300 - (day.revenue / maximum) * 260),
+              )
+              .join(' ')}
+          />
+          {data.trend
+            .filter(
+              (_, index) =>
+                index === 0 ||
+                index === data.trend.length - 1 ||
+                index % Math.max(1, Math.ceil(data.trend.length / 4)) === 0,
+            )
+            .map((day) => {
+              const index = data.trend.indexOf(day)
+              return (
+                <text
+                  key={day.date}
+                  x={
+                    100 + ((index + 0.5) * 875) / Math.max(1, data.trend.length)
+                  }
+                  y="333"
+                  textAnchor="middle"
+                >
+                  {day.date.slice(5)}
+                </text>
+              )
+            })}
+        </svg>
+      </div>
       {!data.trend.some((day) => day.orderValue || day.revenue) && (
         <p className="analytics-empty">No completed sales in this period.</p>
       )}
@@ -304,7 +357,7 @@ function RecentOrders({ data, statuses = false }) {
         <div className="order-status-grid">
           {Object.entries(data.statuses).map(([status, count]) => (
             <div key={status} className={`order-status status-${status}`}>
-              <span>{status}</span>
+              <span>{orderStatusLabel(status)}</span>
               <strong>{count}</strong>
             </div>
           ))}
@@ -322,7 +375,7 @@ function RecentOrders({ data, statuses = false }) {
             <Link to={`/admin/orders/${order.id}`}>
               {order.orderNumber}
               <small className={`order-state state-${order.status}`}>
-                {order.status}
+                {orderStatusLabel(order.status)}
               </small>
             </Link>
             <strong>{formatPrice(order.total)}</strong>
@@ -387,10 +440,6 @@ export default function AdminDashboardPage() {
           <p className="eyebrow">COLLECTOR OPERATIONS</p>
           <h1>{analytics ? 'Analytics.' : 'Store overview.'}</h1>
         </div>
-        <Link className="button button-secondary" to="/admin/orders">
-          <Icon name="bag" />
-          Manage orders
-        </Link>
       </header>
       <form
         className="admin-toolbar analytics-date-form"
@@ -426,6 +475,36 @@ export default function AdminDashboardPage() {
           </p>
         )}
       </form>
+      <div className="chart-ranges" aria-label="Date shortcuts">
+        {['1d', '7d', '30d', 'MTD', 'Last month'].map((label) => (
+          <button
+            key={label}
+            className="button button-secondary"
+            type="button"
+            onClick={() => {
+              const end = new Date()
+              end.setUTCHours(0, 0, 0, 0)
+              const start = new Date(end)
+              if (label === 'MTD') start.setUTCDate(1)
+              else if (label === 'Last month') {
+                end.setUTCDate(0)
+                start.setUTCFullYear(end.getUTCFullYear(), end.getUTCMonth(), 1)
+              } else
+                start.setUTCDate(
+                  start.getUTCDate() - Number.parseInt(label) + 1,
+                )
+              setError('')
+              setParams({
+                ...(analytics ? { view } : {}),
+                from: start.toISOString().slice(0, 10),
+                to: end.toISOString().slice(0, 10),
+              })
+            }}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
       <QueryState
         response={response}
         retry={() => setRevision((value) => value + 1)}

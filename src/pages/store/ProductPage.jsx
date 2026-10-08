@@ -73,11 +73,6 @@ function ProductDetail({ slug }) {
           <h1>{product.name}</h1>
           <p className="detail-price">{formatPrice(product.price)}</p>
           <p className="muted">Store selling price · PHP</p>
-          {product.source === 'demo-fallback' && (
-            <p className="prototype-note">
-              Sample inventory. Price and stock are demo values.
-            </p>
-          )}
           <SavedReference product={product} />
           <dl className="metadata">
             {[
@@ -101,7 +96,9 @@ function ProductDetail({ slug }) {
                 </div>
               ))}
           </dl>
-          <p>{product.description}</p>
+          {!/demonstration|demo values|no payment|no physical|inventory is verified/i.test(
+            product.description || '',
+          ) && <p>{product.description}</p>}
           {product.notes && <p>{product.notes}</p>}
           <form
             className="add-cart-form"
@@ -117,7 +114,7 @@ function ProductDetail({ slug }) {
               <input
                 type="number"
                 min="1"
-                max={Math.min(999, product.stock || 1)}
+                max={Math.min(10, product.stock || 1)}
                 step="1"
                 value={quantity}
                 onChange={(e) => setQuantity(Number(e.target.value))}
@@ -134,9 +131,6 @@ function ProductDetail({ slug }) {
               View your cart →
             </Link>
           )}
-          <p className="prototype-note">
-            Sign in at checkout to place your order and track your collection.
-          </p>
         </section>
       </div>
       {related.length > 0 && (

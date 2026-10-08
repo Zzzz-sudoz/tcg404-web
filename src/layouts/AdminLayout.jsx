@@ -27,7 +27,7 @@ export default function AdminLayout() {
             ['', 'Overview', 'overview'],
             ['/products', 'Products', 'cards'],
             ['/card-import', 'Card import', 'import'],
-            ['/orders', 'Orders', 'bag'],
+            ['/orders', 'Manage orders', 'bag'],
             ['/analytics', 'Analytics', 'analytics'],
             ['/inventory', 'Inventory', 'inventory'],
           ].map(([path, label, icon]) => (

@@ -38,7 +38,7 @@ export default function SignOutButton({ onSignedOut }) {
         }}
       >
         <Icon name="logout" />
-        Sign out
+        Logout
       </button>
       <Dialog
         open={open}
@@ -51,7 +51,7 @@ export default function SignOutButton({ onSignedOut }) {
         <div className="signout-emblem" aria-hidden="true">
           <Icon name="logout" />
         </div>
-        <h2 id="signout-title">Are you sure you want to sign out?</h2>
+        <h2 id="signout-title">Are you sure you want to logout?</h2>
         {error && (
           <p className="field-error" role="alert">
             {error}
@@ -62,7 +62,7 @@ export default function SignOutButton({ onSignedOut }) {
           disabled={busy}
           onClick={confirm}
         >
-          {busy ? 'Signing out…' : 'Sign out'}
+          {busy ? 'Logging out…' : 'Logout'}
           <Icon name="logout" />
         </button>
       </Dialog>

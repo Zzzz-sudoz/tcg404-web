@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
+import ChangePassword from '../../components/store/ChangePassword'
 import { useAuth } from '../../hooks/useAuth'
 import { apiError, apiFields } from '../../utils/api'
 
@@ -61,8 +62,7 @@ export default function AccountPage() {
     <div className="page-width workshop-page auth-page">
       <header className="page-intro">
         <p className="eyebrow">TCG404 / YOUR ACCOUNT</p>
-        <h1>Your collector details.</h1>
-        <p>Keep your name up to date for your next order.</p>
+        <h1>Your account.</h1>
       </header>
       {loading ? (
         <div className="empty-panel" role="status">
@@ -79,56 +79,58 @@ export default function AccountPage() {
           </button>
         </div>
       ) : (
-        <form className="editor-panel auth-form" onSubmit={submit} noValidate>
-          <h2>Profile</h2>
-          <label htmlFor="profile-name">
-            Name
-            <input
-              id="profile-name"
-              name="name"
-              autoComplete="name"
-              value={name}
-              maxLength={100}
-              required
-              disabled={saving}
-              onChange={(event) => setName(event.target.value)}
-              aria-invalid={!!error}
-              aria-describedby={error ? 'profile-error' : undefined}
-            />
-          </label>
-          <label htmlFor="profile-email">
-            Email
-            <input
-              id="profile-email"
-              type="email"
-              value={user.email}
-              readOnly
-            />
-            <span className="muted">Your sign-in email is read-only here.</span>
-          </label>
-          <p>
-            Account role:{' '}
-            <strong>{user.role === 'admin' ? 'Admin' : 'Customer'}</strong>
-          </p>
-          <p
-            id="profile-error"
-            ref={errorSummary}
-            tabIndex={-1}
-            role={error ? 'alert' : undefined}
-            className="field-error"
-          >
-            {error}
-          </p>
-          {message && <p role="status">{message}</p>}
-          <button className="button button-primary" disabled={saving}>
-            {saving ? 'Saving...' : 'Save profile'}
-          </button>
-          <Link to="/cart">View your cart</Link>
-          <Link to="/account/orders">View your orders</Link>
-          {user.role === 'admin' && (
-            <Link to="/admin">Open admin workspace</Link>
-          )}
-        </form>
+        <div className="account-panels">
+          <form className="editor-panel auth-form" onSubmit={submit} noValidate>
+            <h2>Profile</h2>
+            <label htmlFor="profile-name">
+              Name
+              <input
+                id="profile-name"
+                name="name"
+                autoComplete="name"
+                value={name}
+                maxLength={100}
+                required
+                disabled={saving}
+                onChange={(event) => setName(event.target.value)}
+                aria-invalid={!!error}
+                aria-describedby={error ? 'profile-error' : undefined}
+              />
+            </label>
+            <label htmlFor="profile-email">
+              Email
+              <input
+                id="profile-email"
+                type="email"
+                value={user.email}
+                readOnly
+              />
+            </label>
+            <p>
+              Account role:{' '}
+              <strong>{user.role === 'admin' ? 'Admin' : 'Customer'}</strong>
+            </p>
+            <p
+              id="profile-error"
+              ref={errorSummary}
+              tabIndex={-1}
+              role={error ? 'alert' : undefined}
+              className="field-error"
+            >
+              {error}
+            </p>
+            {message && <p role="status">{message}</p>}
+            <button className="button button-primary" disabled={saving}>
+              {saving ? 'Saving...' : 'Save profile'}
+            </button>
+            <Link to="/cart">View your cart</Link>
+            <Link to="/account/orders">View your orders</Link>
+            {user.role === 'admin' && (
+              <Link to="/admin">Open admin workspace</Link>
+            )}
+          </form>
+          <ChangePassword />
+        </div>
       )}
     </div>
   )

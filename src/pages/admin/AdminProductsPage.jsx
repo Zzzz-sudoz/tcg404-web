@@ -159,9 +159,6 @@ export default function AdminProductsPage() {
                         <div>
                           <strong>{p.name}</strong>
                           <small>{p.sku}</small>
-                          {p.source === 'demo-fallback' && (
-                            <small>Sample inventory · demo values</small>
-                          )}
                         </div>
                       </div>
                     </td>

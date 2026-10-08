@@ -88,7 +88,7 @@ export default function CartPage() {
                       type="number"
                       min="1"
                       step="1"
-                      max={Math.min(999, line.product?.stock || 1)}
+                      max={Math.min(10, line.product?.stock || 1)}
                       value={line.quantity}
                       onChange={(e) =>
                         setErrors({
@@ -143,9 +143,7 @@ export default function CartPage() {
               <span>Subtotal</span>
               <strong>{formatPrice(summary.subtotal)}</strong>
             </div>
-            <p>
-              Choose your payment method and delivery address at checkout.
-            </p>
+            <p>Choose your payment method and delivery address at checkout.</p>
             {summary.valid && !inventory.loading && !inventory.error ? (
               <Link className="button button-primary" to="/checkout">
                 Review checkout →

@@ -154,11 +154,6 @@ export default function ProductForm({ initial, products, onSave, onCancel }) {
         </div>
         <h2>{values.name || 'Your next single'}</h2>
         <p>{values.setName || 'Set not entered'}</p>
-        {initial.source === 'demo-fallback' && (
-          <p className="prototype-note">
-            Sample inventory. Initial price and stock are demo values.
-          </p>
-        )}
         <SavedReference product={initial} />
         <p className="prototype-note">
           Saved changes persist in store inventory. Artwork uses a URL or local
