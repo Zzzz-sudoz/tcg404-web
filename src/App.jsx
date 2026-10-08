@@ -23,6 +23,7 @@ import AdminCardImportPage from './pages/admin/AdminCardImportPage'
 import AdminPlaceholderPage from './pages/admin/AdminPlaceholderPage'
 import './App.css'
 import './styles/workshop.css'
+import './styles/collector-operations.css'
 
 export default function App() {
   return (

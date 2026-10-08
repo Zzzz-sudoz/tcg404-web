@@ -34,7 +34,6 @@ export default function AdminProductsPage() {
         <div>
           <p className="eyebrow">02 / INVENTORY</p>
           <h1>Every single, accounted for.</h1>
-          <p>{response.meta.total ?? '...'} records · Saved store inventory</p>
         </div>
         <div className="form-actions">
           <Link className="button" to="/admin/card-import">

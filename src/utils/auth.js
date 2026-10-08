@@ -1,3 +1,7 @@
+export function loginDestination(user, returnTo) {
+  return user.role === 'admin' ? '/admin' : safeReturnTo(returnTo)
+}
+
 export function safeReturnTo(value, fallback = '/shop') {
   if (
     typeof value !== 'string' ||

@@ -143,7 +143,6 @@ export default function AdminCardImportPage() {
         <div>
           <p className="eyebrow">03 / CATALOG IMPORT</p>
           <h1>Find it. Price it. Stock it.</h1>
-          <p>External catalog metadata → saved store inventory.</p>
         </div>
         <span className="status-chip">EXTERNAL CATALOG</span>
       </header>

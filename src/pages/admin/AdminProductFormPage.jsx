@@ -52,11 +52,10 @@ function Editor({ initial }) {
     <div className="admin-page">
       <header className="admin-heading">
         <div>
-          <p className="eyebrow">02 / PRODUCT EDITOR</p>
+          <p className="eyebrow">PRODUCT EDITOR</p>
           <h1>
             {initial.id ? 'Refine the single.' : 'Make room for a new card.'}
           </h1>
-          <p>Store inventory editor · PHP selling prices</p>
         </div>
       </header>
       <ProductForm
