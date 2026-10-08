@@ -1,3 +1,4 @@
+import LoadingLayout from '../../components/common/LoadingLayout'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { usePrototype } from '../../hooks/usePrototype'
@@ -22,16 +23,20 @@ function ProductDetail({ slug }) {
     revision,
   )
   const product =
-    response.data && !Array.isArray(response.data) ? response.data : null
+    response.data && !Array.isArray(response.data)
+      ? response.data
+      : response.loading
+        ? products.find((item) => item.slug === slug || item.id === slug)
+        : null
   useEffect(() => {
     if (product) rememberProducts([product])
   }, [product, rememberProducts])
   const [quantity, setQuantity] = useState(1)
   const [message, setMessage] = useState('')
-  if (response.loading)
+  if (response.loading && !product)
     return (
-      <div className="page-width empty-panel" role="status">
-        Loading card...
+      <div className="page-width workshop-page">
+        <LoadingLayout variant="detail" count={2} />
       </div>
     )
   if (response.status === 404) return <NotFoundPage />

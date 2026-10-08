@@ -1,5 +1,5 @@
 import { orderStatusLabel } from '../../utils/operations'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { usePrototype } from '../../hooks/usePrototype'
 import { useAuth } from '../../hooks/useAuth'
@@ -16,6 +16,7 @@ import PaymentFields from '../../components/store/PaymentFields'
 import { apiError, apiFields } from '../../utils/api'
 import { formatPrice } from '../../data/store'
 import { useCartInventory } from '../../hooks/useCartInventory'
+import { useApiQuery } from '../../hooks/useApiQuery'
 
 export default function CheckoutPage() {
   const { cart, products, placeOrder, orderRequest, persistenceNotice } =
@@ -31,6 +32,11 @@ export default function CheckoutPage() {
   const saving = submitting || !!orderRequest?.pending
   const pending = useRef(false)
   const errorSummary = useRef(null)
+  const touched = useRef(new Set())
+  const paymentTouched = useRef(false)
+  const saved = useApiQuery('/auth/preferences')
+  const [addressId, setAddressId] = useState('')
+  const [paymentId, setPaymentId] = useState('')
   const [payment, setPayment] = useState({
     method: 'card',
     number: '',
@@ -51,6 +57,42 @@ export default function CheckoutPage() {
     notes: '',
     ...(orderRequest?.ownerId === user.id ? orderRequest.payload.shipping : {}),
   }))
+  useEffect(() => {
+    const preferences = saved.data.preferences
+    if (
+      !preferences ||
+      orderRequest?.pending ||
+      orderRequest?.ownerId === user.id
+    )
+      return
+    const timer = setTimeout(() => {
+      const address = preferences.addresses[0]
+      if (address) {
+        setFields((current) => ({
+          ...current,
+          ...Object.fromEntries(
+            Object.entries(address).filter(
+              ([key]) =>
+                Object.hasOwn(current, key) && !touched.current.has(key),
+            ),
+          ),
+        }))
+        setAddressId(address.id)
+      }
+      const method = preferences.payments[0]
+      if (method && !paymentTouched.current) {
+        setPayment((current) => ({
+          ...current,
+          method: method.method,
+          holder: method.holder || current.holder,
+          expiry: method.expiry || '',
+          mobile: method.mobile || '',
+        }))
+        setPaymentId(method.id)
+      }
+    }, 0)
+    return () => clearTimeout(timer)
+  }, [saved.data, orderRequest, user.id])
   const blocked = !summary.valid || inventory.loading || !!inventory.error
   const clearError = (key) =>
     setErrors((current) =>
@@ -59,6 +101,7 @@ export default function CheckoutPage() {
       ),
     )
   const updateField = (key, value) => {
+    touched.current.add(key)
     setFields((current) => ({ ...current, [key]: value }))
     clearError(key)
   }
@@ -198,6 +241,78 @@ export default function CheckoutPage() {
             aria-busy={saving}
           >
             <h2>Delivery details</h2>
+            <div className="saved-checkout-details">
+              {!!saved.data.preferences?.addresses.length && (
+                <label>
+                  Saved address
+                  <select
+                    value={addressId}
+                    disabled={saving}
+                    onChange={(event) => {
+                      setAddressId(event.target.value)
+                      const address = saved.data.preferences.addresses.find(
+                        (row) => row.id === event.target.value,
+                      )
+                      if (address) {
+                        Object.keys(address).forEach((key) =>
+                          touched.current.add(key),
+                        )
+                        setFields((current) => ({
+                          ...current,
+                          ...Object.fromEntries(
+                            Object.entries(address).filter(([key]) =>
+                              Object.hasOwn(current, key),
+                            ),
+                          ),
+                        }))
+                      }
+                    }}
+                  >
+                    <option value="">Enter address</option>
+                    {saved.data.preferences.addresses.map((row) => (
+                      <option key={row.id} value={row.id}>
+                        {row.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
+              {!!saved.data.preferences?.payments.length && (
+                <label>
+                  Saved payment method
+                  <select
+                    value={paymentId}
+                    disabled={saving}
+                    onChange={(event) => {
+                      paymentTouched.current = true
+                      setPaymentId(event.target.value)
+                      const method = saved.data.preferences.payments.find(
+                        (row) => row.id === event.target.value,
+                      )
+                      setPayment((current) => ({
+                        ...current,
+                        method: method?.method || 'card',
+                        holder: method?.holder || user.name,
+                        expiry: method?.expiry || '',
+                        mobile: method?.mobile || '',
+                        number: '',
+                        cvc: '',
+                      }))
+                    }}
+                  >
+                    <option value="">Use another method</option>
+                    {saved.data.preferences.payments.map((row) => (
+                      <option key={row.id} value={row.id}>
+                        {row.label} ·{' '}
+                        {row.method === 'gcash'
+                          ? 'GCash'
+                          : `${row.brand} ${row.last4}`}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
+            </div>
             {[
               ['name', 'Recipient name', 'text', 100, 'name'],
               ['email', 'Email', 'email', 254, 'email'],
@@ -295,7 +410,10 @@ export default function CheckoutPage() {
             </div>
             <PaymentFields
               value={payment}
-              onChange={setPayment}
+              onChange={(next) => {
+                paymentTouched.current = true
+                setPayment(next)
+              }}
               onFieldChange={(key) => {
                 if (key === 'method')
                   setErrors((current) =>

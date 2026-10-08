@@ -126,10 +126,7 @@
   gap: 10px;
 }
 .header-account.is-signed-in {
-  padding: 3px 8px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-control);
-  background: #ffffff04;
+  padding: 0;
 }
 .header-account .account-link span {
   overflow: hidden;

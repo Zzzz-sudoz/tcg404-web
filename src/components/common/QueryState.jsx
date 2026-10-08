@@ -1,8 +1,10 @@
+import LoadingLayout from './LoadingLayout'
 export default function QueryState({
   response,
   retry,
   empty = 'No records found.',
 }) {
+  if (response.loading) return <LoadingLayout variant="records" count={3} />
   if (!response.loading && !response.error && response.data?.length !== 0)
     return null
   return (

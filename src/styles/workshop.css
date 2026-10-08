@@ -1229,6 +1229,22 @@ button.text-link:hover {
   display: grid;
   gap: 1.3rem;
 }
+.auth-switch {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0 0.4rem;
+  text-align: center;
+  color: var(--muted);
+}
+.auth-switch a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 700;
+}
 .stock-editor {
   display: grid;
   grid-template-columns:

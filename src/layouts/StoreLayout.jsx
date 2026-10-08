@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router'
 import Icon from '../components/common/Icon'
-import SignOutButton from '../components/common/SignOutButton'
 import { usePrototype } from '../hooks/usePrototype'
 import { useAuth } from '../hooks/useAuth'
 
@@ -95,7 +94,6 @@ function StoreHeader() {
                 {isAdmin ? 'Admin workspace' : user?.name || 'Account'}
               </span>
             </Link>
-            {user && !isAdmin && <SignOutButton onSignedOut={closeMenu} />}
           </div>
           <button
             ref={menuButton}

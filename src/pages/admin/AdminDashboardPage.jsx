@@ -1,3 +1,4 @@
+import LoadingLayout from '../../components/common/LoadingLayout'
 import Icon from '../../components/common/Icon'
 import { useState } from 'react'
 import { Link, useLocation, useSearchParams } from 'react-router'
@@ -505,10 +506,17 @@ export default function AdminDashboardPage() {
           </button>
         ))}
       </div>
-      <QueryState
-        response={response}
-        retry={() => setRevision((value) => value + 1)}
-      />
+      {response.loading ? (
+        <>
+          <LoadingLayout variant="metrics" />
+          <LoadingLayout variant="chart" count={1} />
+        </>
+      ) : (
+        <QueryState
+          response={response}
+          retry={() => setRevision((value) => value + 1)}
+        />
+      )}
       {!response.loading && !response.error && (
         <>
           <p className="analytics-range">

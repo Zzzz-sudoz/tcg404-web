@@ -1,11 +1,9 @@
-import { useCallback, useEffect, useState } from 'react'
-import { useLocation } from 'react-router'
+import { useCallback, useState } from 'react'
 import { PrototypeContext } from './PrototypeContext'
 import { api, apiError } from '../utils/api'
 import { games } from '../data/store'
 import { mergeInventory } from '../utils/inventory'
 export default function PrototypeProvider({ children }) {
-  const { pathname } = useLocation()
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -27,17 +25,20 @@ export default function PrototypeProvider({ children }) {
       setLoading(true)
       setError('')
       try {
-        const responses = await Promise.all([
-          api.get('/products', {
-            params: { featured: true, limit: 8 },
-            signal,
-          }),
+        await Promise.all([
+          api
+            .get('/products', {
+              params: { featured: true, limit: 8 },
+              signal,
+            })
+            .then((response) => {
+              if (!signal?.aborted) rememberProducts(response.data.data)
+            }),
           api.get('/products', {
             params: { sort: 'newest', limit: 8 },
             signal,
           }),
         ])
-        rememberProducts(responses.flatMap((r) => r.data.data))
       } catch (e) {
         if (e.code !== 'ERR_CANCELED') setError(apiError(e))
       } finally {
@@ -46,15 +47,6 @@ export default function PrototypeProvider({ children }) {
     },
     [rememberProducts],
   )
-  useEffect(() => {
-    if (pathname !== '/') return
-    const controller = new AbortController()
-    const timer = setTimeout(() => refreshProducts(controller.signal), 0)
-    return () => {
-      clearTimeout(timer)
-      controller.abort()
-    }
-  }, [refreshProducts, pathname])
   const upsertProduct = async (product) => {
     const allowed = [
       'name',

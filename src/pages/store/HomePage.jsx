@@ -1,3 +1,4 @@
+import LoadingLayout from '../../components/common/LoadingLayout'
 import { useEffect } from 'react'
 import { Link } from 'react-router'
 import { formatPrice, games } from '../../data/store'
@@ -61,7 +62,9 @@ function Hero() {
             <span>Collect. Trade. Discover.</span>
           </div>
         </div>
-        {spotlight && (
+        {!spotlight ? (
+          <LoadingLayout variant="hero" count={1} />
+        ) : (
           <div className="hero-display">
             <div className="display-label">
               <span>THE FEATURED DROP</span>
@@ -131,17 +134,8 @@ function Hero() {
 }
 
 function ProductCollection({ products, state }) {
-  if (state === 'loading')
-    return (
-      <div className="collection-state" role="status">
-        <span className="skeleton-bar" />
-        <h3>Loading featured cards</h3>
-        <p>Artwork and card information will appear here.</p>
-        <Link className="text-link" to="/shop">
-          Browse inventory
-        </Link>
-      </div>
-    )
+  if (state === 'loading' && !products.length)
+    return <LoadingLayout count={4} />
   if (state === 'error')
     return (
       <div className="collection-state" role="alert">
@@ -173,6 +167,14 @@ function ProductCollection({ products, state }) {
 
 export default function HomePage() {
   const { products, loading, error, refreshProducts } = usePrototype()
+  useEffect(() => {
+    const controller = new AbortController()
+    const timer = setTimeout(() => refreshProducts(controller.signal), 0)
+    return () => {
+      clearTimeout(timer)
+      controller.abort()
+    }
+  }, [refreshProducts])
   const featured = products
     .filter((product) => product.isActive !== false && product.isFeatured)
     .slice(0, 4)
