@@ -1,6 +1,6 @@
 import { Link, Navigate, Outlet, useLocation } from 'react-router'
 import { useAuth } from '../../hooks/useAuth'
-export default function ProtectedRoute({ admin = false }) {
+export default function ProtectedRoute({ admin = false, customer = false, guest = false }) {
   const { user, loading, error, restore } = useAuth()
   const location = useLocation()
   if (loading)
@@ -18,7 +18,8 @@ export default function ProtectedRoute({ admin = false }) {
         </button>
       </div>
     )
-  if (!user)
+  if (customer && user?.role === 'admin') return <Navigate to="/admin" replace />
+  if (!user && !guest)
     return (
       <Navigate
         to={`/login?returnTo=${encodeURIComponent(location.pathname + location.search)}`}

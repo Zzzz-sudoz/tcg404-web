@@ -2,6 +2,7 @@ import LoadingLayout from '../../components/common/LoadingLayout'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { usePrototype } from '../../hooks/usePrototype'
+import { useAuth } from '../../hooks/useAuth'
 import { formatPrice } from '../../data/store'
 import { useApiQuery } from '../../hooks/useApiQuery'
 import CardImage from '../../components/store/CardImage'
@@ -15,6 +16,7 @@ export default function ProductPage() {
 }
 
 function ProductDetail({ slug }) {
+  const { user } = useAuth()
   const { products, addToCart, rememberProducts } = usePrototype()
   const [revision, setRevision] = useState(0)
   const response = useApiQuery(
@@ -105,33 +107,35 @@ function ProductDetail({ slug }) {
             product.description || '',
           ) && <p>{product.description}</p>}
           {product.notes && <p>{product.notes}</p>}
-          <form
-            className="add-cart-form"
-            onSubmit={(e) => {
-              e.preventDefault()
-              setMessage(
-                addToCart(product.id, quantity) || 'Added to your cart.',
-              )
-            }}
-          >
-            <label>
-              Quantity
-              <input
-                type="number"
-                min="1"
-                max={Math.min(10, product.stock || 1)}
-                step="1"
-                value={quantity}
-                onChange={(e) => setQuantity(Number(e.target.value))}
-                disabled={!product.stock}
-              />
-            </label>
-            <button className="button button-primary" disabled={!product.stock}>
-              {product.stock ? 'Add to cart' : 'Out of stock'}
-            </button>
-          </form>
+          {user?.role !== 'admin' && (
+            <form
+              className="add-cart-form"
+              onSubmit={(e) => {
+                e.preventDefault()
+                setMessage(
+                  addToCart(product.id, quantity) || 'Added to your cart.',
+                )
+              }}
+            >
+              <label>
+                Quantity
+                <input
+                  type="number"
+                  min="1"
+                  max={Math.min(10, product.stock || 1)}
+                  step="1"
+                  value={quantity}
+                  onChange={(e) => setQuantity(Number(e.target.value))}
+                  disabled={!product.stock}
+                />
+              </label>
+              <button className="button button-primary" disabled={!product.stock}>
+                {product.stock ? 'Add to cart' : 'Out of stock'}
+              </button>
+            </form>
+          )}
           <p role="status">{message}</p>
-          {message === 'Added to your cart.' && (
+          {user?.role !== 'admin' && message === 'Added to your cart.' && (
             <Link className="text-link" to="/cart">
               View your cart →
             </Link>
