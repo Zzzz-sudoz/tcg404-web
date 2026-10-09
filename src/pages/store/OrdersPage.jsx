@@ -40,16 +40,13 @@ export default function OrdersPage({ admin = false }) {
     <div className={admin ? 'admin-page' : 'page-width workshop-page'}>
       <header className="admin-heading">
         <div>
-          <p className="eyebrow">
-            {admin ? 'COLLECTOR OPERATIONS' : 'YOUR ACCOUNT'}
-          </p>
+          {admin && <p className="eyebrow">COLLECTOR OPERATIONS</p>}
           <h1>{admin ? 'Order management.' : 'Your order history.'}</h1>
         </div>
         {!admin && <div className="order-heading-actions">
           <button className="button" onClick={response.refresh} disabled={response.loading || response.refreshing}>
             {response.refreshing ? 'Refreshing...' : 'Refresh orders'}
           </button>
-          <Link className="button" to="/account">Your account</Link>
         </div>}
       </header>
       {!admin && (
