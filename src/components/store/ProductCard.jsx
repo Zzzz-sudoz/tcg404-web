@@ -1,8 +1,10 @@
 import { Link } from 'react-router'
 import { formatPrice } from '../../data/store'
 import CardImage from './CardImage'
+import { useAuth } from '../../hooks/useAuth'
 
 export default function ProductCard({ product, quickAdd = false }) {
+  const { user } = useAuth()
   const stockLabel =
     product.stock === 0
       ? 'Out of stock'
@@ -39,7 +41,7 @@ export default function ProductCard({ product, quickAdd = false }) {
           Preview<span className="sr-only"> {product.name}</span>
         </Link>
       </div>
-      {quickAdd &&
+      {quickAdd && user?.role !== 'admin' &&
         (product.stock ? (
           <Link className="button quick-add" to={`/product/${product.slug}`}>
             Add to cart

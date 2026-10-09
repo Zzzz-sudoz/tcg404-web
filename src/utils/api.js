@@ -4,10 +4,12 @@ export const api = axios.create({
   withCredentials: true,
 })
 export const apiError = (error) =>
-  error.response?.data?.message ||
-  error.response?.data?.error?.message ||
-  error.message ||
-  'Request unavailable. Try again.'
+  error.response?.status === 429
+    ? 'Too many attempts. Please try again shortly.'
+    : error.response?.data?.message ||
+      error.response?.data?.error?.message ||
+      error.message ||
+      'Request unavailable. Try again.'
 export const apiFields = (error) =>
   error.response?.data?.error?.fields ||
   error.response?.data?.fields ||

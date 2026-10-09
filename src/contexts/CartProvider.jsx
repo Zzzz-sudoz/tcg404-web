@@ -14,10 +14,15 @@ import {
 } from '../utils/cart'
 import { beginOrderAttempt, finishOrderAttempt } from '../utils/checkout'
 import { api } from '../utils/api'
+import { useAuth } from '../hooks/useAuth'
 
 const getStorage = () => window.localStorage
 
 export default function CartProvider({ children }) {
+  const { user } = useAuth()
+  const adminNotice = user?.role === 'admin'
+    ? 'Use a customer account to manage a cart or place an order.'
+    : ''
   const { products } = useContext(PrototypeContext)
   const [initial] = useState(() => loadStoredCart(getStorage))
   const [cart, setCart] = useState(initial.cart)
@@ -56,6 +61,7 @@ export default function CartProvider({ children }) {
     return () => window.removeEventListener('storage', synchronize)
   }, [])
   const change = (operation, id, quantity) => {
+    if (adminNotice) return adminNotice
     if (!isCartId(id)) return 'This card cannot be added to a saved cart.'
     const result = operation(current.current, products, id, quantity)
     if (!result.error) {
@@ -66,10 +72,12 @@ export default function CartProvider({ children }) {
     return result.error
   }
   const replace = (items) => {
+    if (adminNotice) return adminNotice
     current.current = items
     setCart(items)
   }
   const placeOrder = async (payload, ownerId) => {
+    if (adminNotice) throw new Error(adminNotice)
     request.current = beginOrderAttempt(request.current, payload, ownerId)
     setOrderRequest(request.current)
     let receipt = null

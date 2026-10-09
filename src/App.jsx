@@ -41,8 +41,10 @@ export default function App() {
                 <Route index element={<HomePage />} />
                 <Route path="shop" element={<ShopPage />} />
                 <Route path="product/:slug" element={<ProductPage />} />
-                <Route path="cart" element={<CartPage />} />
-                <Route element={<ProtectedRoute />}>
+                <Route element={<ProtectedRoute customer guest />}>
+                  <Route path="cart" element={<CartPage />} />
+                </Route>
+                <Route element={<ProtectedRoute customer />}>
                   <Route path="checkout" element={<CheckoutPage />} />
                   <Route path="account" element={<AccountLayout />}>
                     <Route index element={<AccountOverview />} />

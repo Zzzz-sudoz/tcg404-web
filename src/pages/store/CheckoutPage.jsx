@@ -167,7 +167,7 @@ export default function CheckoutPage() {
           <p className="eyebrow">
             ORDER CONFIRMED / {confirmation.orderNumber}
           </p>
-          <h1>Your next finds, confirmed.</h1>
+          <h1>Order placed successfully.</h1>
           <p>
             Order status:{' '}
             <strong>{orderStatusLabel(confirmation.status)}</strong>. Payment

@@ -41,15 +41,27 @@ export function cardBrand(number = '') {
 export function validatePayment(payment) {
   const errors = {}
   if (payment.method === 'card') {
+    const digits = (payment.number || '').replace(/\D/g, '')
+    const checksum = [...digits].reverse().reduce((sum, digit, index) => {
+      const value = Number(digit) * (index % 2 ? 2 : 1)
+      return sum + (value > 9 ? value - 9 : value)
+    }, 0)
     if (
       !/^[\d -]+$/.test(payment.number || '') ||
-      !/^\d{6,19}$/.test((payment.number || '').replace(/\D/g, ''))
+      !/^\d{13,19}$/.test(digits) ||
+      /^0+$/.test(digits) ||
+      checksum % 10 !== 0
     )
-      errors.number = 'Enter 6 to 19 digits.'
+      errors.number = 'Enter a valid card number of 13 to 19 digits.'
     if (!payment.holder?.trim() || payment.holder.trim().length > 100)
       errors.holder = 'Enter the name on your card.'
-    if (!/^(0[1-9]|1[0-2])\s*\/\s*\d{2}$/.test(payment.expiry || ''))
-      errors.expiry = 'Use MM/YY, with a month from 01 to 12.'
+    const expiry = /^(0[1-9]|1[0-2])\/(\d{2})$/.exec(payment.expiry || '')
+    const today = new Date()
+    if (
+      !expiry ||
+      new Date(2000 + Number(expiry[2]), Number(expiry[1]), 1) <= today
+    )
+      errors.expiry = 'Enter a current or future expiry in MM/YY format.'
     if (!/^\d{3,4}$/.test(payment.cvc || ''))
       errors.cvc = 'Enter 3 or 4 digits.'
   } else if (payment.method === 'gcash') {
