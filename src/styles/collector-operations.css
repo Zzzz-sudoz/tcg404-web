@@ -745,3 +745,99 @@ dialog.signout-dialog {
 .receipt-page .order-summary .field-error:empty {
   display: none;
 }
+.order-heading-actions,
+.order-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+.order-categories {
+  margin-bottom: 1.5rem;
+}
+.order-categories .button[aria-current='page'] {
+  background: var(--accent);
+  color: #15161b;
+}
+.customer-order-list {
+  display: grid;
+  gap: 1rem;
+}
+.customer-order {
+  overflow-wrap: anywhere;
+}
+.customer-order .status-chip[data-status='processing'],
+.customer-order .status-chip[data-status='confirmed'] {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.customer-order .status-chip[data-status='shipped'],
+.customer-order .status-chip[data-status='completed'] {
+  color: #8ed8c2;
+  border-color: #8ed8c2;
+}
+.customer-order .status-chip[data-status='cancelled'],
+.customer-order .status-chip[data-status='delayed'] {
+  color: #ffc0b5;
+  border-color: #e68877;
+}
+.customer-order .row-between {
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.order-item-previews {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  display: grid;
+  gap: 0.75rem;
+}
+.order-item-previews li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.order-item-previews img {
+  width: 42px;
+  height: 58px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+.order-item-previews small,
+.order-timeline time {
+  display: block;
+}
+.order-timeline {
+  margin-bottom: 1.5rem;
+}
+.order-timeline ol {
+  list-style: none;
+  padding-left: 0.5rem;
+}
+.order-timeline li {
+  position: relative;
+  padding: 0 0 1.5rem 1.5rem;
+  border-left: 1px solid var(--control-border);
+}
+.order-timeline li::before {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 0.35rem;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--muted);
+}
+.order-timeline li:last-child {
+  border-left-color: transparent;
+  padding-bottom: 0;
+}
+.order-timeline li:last-child::before {
+  background: var(--accent);
+}
+.order-timeline li:last-child strong {
+  color: var(--accent);
+}
+.order-refresh {
+  margin: 0 0 1rem 1rem;
+}

@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { Link, useParams } from 'react-router'
-import { useApiQuery } from '../../hooks/useApiQuery'
+import { useOrderQuery } from '../../hooks/useOrderQuery'
+import { orderTimeline } from '../../utils/orderHistory'
 import { api, apiError } from '../../utils/api'
 import { formatPrice } from '../../data/store'
 import { statusOptions, orderStatusLabel } from '../../utils/operations'
@@ -13,14 +14,13 @@ import {
 
 export default function OrderDetailPage({ admin = false }) {
   const { id } = useParams()
-  const [revision, setRevision] = useState(0)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const pending = useRef(false)
   const feedback = useRef(null)
   const path = `${admin ? '/admin/orders' : '/orders'}/${id}`
-  const response = useApiQuery(path, '', revision)
+  const response = useOrderQuery(path, '', admin)
   const order = response.data
   const update = async (event) => {
     event.preventDefault()
@@ -35,7 +35,7 @@ export default function OrderDetailPage({ admin = false }) {
         revision: order.revision,
       })
       setMessage('Order status saved.')
-      setRevision((v) => v + 1)
+      response.refresh()
     } catch (e) {
       setError(apiError(e))
       feedback.current?.focus()
@@ -54,7 +54,11 @@ export default function OrderDetailPage({ admin = false }) {
       >
         Back to orders
       </Link>
-      <QueryState response={response} retry={() => setRevision((v) => v + 1)} />
+      {!admin && <button className="button order-refresh" onClick={response.refresh} disabled={response.loading || response.refreshing}>
+        {response.refreshing ? 'Refreshing...' : 'Refresh order'}
+      </button>}
+      <QueryState response={response} retry={response.refresh} />
+      {response.refreshError && <p className="field-error" role="alert">Could not refresh this order: {response.refreshError} Your saved receipt is still shown.</p>}
       {!response.loading && !response.error && (
         <>
           <header className="admin-heading">
@@ -79,6 +83,20 @@ export default function OrderDetailPage({ admin = false }) {
                     {order.buyer?.email || order.shipping.email}
                   </p>
                 </div>
+              )}
+              {!admin && (
+                <section className="order-timeline" aria-labelledby="order-progress-heading">
+                  <h2 id="order-progress-heading">Order progress</h2>
+                  <ol>
+                    {orderTimeline(order).map((event, index) => (
+                      <li key={`${event.status}-${event.at}-${index}`}>
+                        <strong>{event.status === 'pending' ? 'Order placed' : orderStatusLabel(event.status)}</strong>
+                        <time dateTime={event.at}>{new Date(event.at).toLocaleString()}</time>
+                      </li>
+                    ))}
+                  </ol>
+                  {!order.statusHistory?.length && <p>Only the available order dates are shown.</p>}
+                </section>
               )}
               <h2>Ordered singles</h2>
               <div
@@ -186,7 +204,7 @@ export default function OrderDetailPage({ admin = false }) {
                   disabled={saving}
                   onClick={() => {
                     setError('')
-                    setRevision((v) => v + 1)
+                    response.refresh()
                   }}
                 >
                   Reload current order
