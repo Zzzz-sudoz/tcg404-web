@@ -4,7 +4,7 @@ export const orderStatusLabel = (status) =>
     confirmed: 'Processing',
     processing: 'Processing',
     shipped: 'To be delivered',
-    completed: 'Completed',
+    completed: 'Delivered',
     cancelled: 'Canceled',
     delayed: 'Delayed',
   })[status] || status
@@ -22,7 +22,7 @@ export function statusOptions(status) {
       pending: ['processing', 'shipped', 'cancelled', 'delayed'],
       confirmed: ['processing', 'shipped', 'cancelled', 'delayed'],
       processing: ['shipped', 'cancelled', 'delayed'],
-      shipped: ['completed', 'cancelled', 'delayed'],
+      shipped: ['completed', 'delayed'],
       delayed: ['processing', 'shipped', 'cancelled'],
     }[status] || []
   )

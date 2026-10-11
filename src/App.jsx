@@ -4,6 +4,10 @@ import StoreLayout from './layouts/StoreLayout'
 import HomePage from './pages/store/HomePage'
 import AuthPage from './pages/store/AuthPage'
 import AuthProvider from './contexts/AuthProvider'
+import FavoritesProvider from './contexts/FavoritesProvider'
+import FavoritesPage from './pages/store/FavoritesPage'
+import AdminReturnsPage from './pages/admin/AdminReturnsPage'
+import AdminReturnDetailPage from './pages/admin/AdminReturnDetailPage'
 import CartProvider from './contexts/CartProvider'
 import AccountPage from './pages/store/AccountPage'
 import AccountLayout from './layouts/AccountLayout'
@@ -34,6 +38,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <FavoritesProvider>
         <PrototypeProvider>
           <CartProvider>
             <Routes>
@@ -50,6 +55,7 @@ export default function App() {
                     <Route index element={<AccountOverview />} />
                     <Route path="profile" element={<AccountPage />} />
                     <Route path="orders" element={<OrdersPage />} />
+                    <Route path="favorites" element={<FavoritesPage />} />
                     <Route path="orders/:id" element={<OrderDetailPage />} />
                     <Route path="cart" element={<CartPage />} />
                     <Route
@@ -87,6 +93,8 @@ export default function App() {
                   />
                   <Route path="card-import" element={<AdminCardImportPage />} />
                   <Route path="orders" element={<OrdersPage admin />} />
+                  <Route path="returns" element={<AdminReturnsPage />} />
+                  <Route path="returns/:id" element={<AdminReturnDetailPage />} />
                   <Route
                     path="orders/:id"
                     element={<OrderDetailPage admin />}
@@ -103,6 +111,7 @@ export default function App() {
             </Routes>
           </CartProvider>
         </PrototypeProvider>
+        </FavoritesProvider>
       </AuthProvider>
     </BrowserRouter>
   )

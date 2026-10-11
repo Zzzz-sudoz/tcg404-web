@@ -73,7 +73,8 @@ dialog.signout-dialog {
 }
 .admin-sidebar-actions > .button,
 .admin-sidebar-actions > .signout-trigger {
-  justify-content: flex-start;
+  justify-content: center;
+  text-align: center;
   width: 100%;
   border-radius: 10px;
   padding: 12px 14px;
@@ -841,3 +842,68 @@ dialog.signout-dialog {
 .order-refresh {
   margin: 0 0 1rem 1rem;
 }
+.product-card { position: relative; }
+.product-card > .favorite-control { position: absolute; top: 20px; right: 20px; z-index: 1; }
+.favorite-button { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid #73737f; border-radius: 50%; background: #202127; color: #f6f3e8; cursor: pointer; }
+.favorite-button.is-saved { color: #f4da81; border-color: #f4da81; }
+.favorite-button.is-saved svg { fill: currentColor; }
+.favorite-button:focus-visible { outline: 3px solid #f4da81; outline-offset: 3px; }
+.favorite-button:disabled { opacity: .6; cursor: wait; }
+.favorite-control .field-error { display: block; max-width: 220px; padding: 8px; background: #202127; }
+.favorites-page > p { margin-block: 16px 32px; }
+.order-after-sales { margin-block: 28px; display: grid; gap: 20px; }
+.order-after-sales:empty { display: none; }
+.return-history { padding-left: 24px; margin-block: 20px; }
+.return-history li { padding: 0 0 20px 8px; }
+.return-history time { display: block; margin-top: 6px; color: #bcbac8; }
+.return-history p { margin-block: 8px; }
+.after-sales-dialog { width: min(560px, calc(100vw - 32px)); max-height: calc(100dvh - 48px); overflow-y: auto; padding: 32px; border: 1px solid #73737f; border-radius: 18px; background: #202127; color: #f6f3e8; }
+.after-sales-dialog::backdrop { background: #000a; }
+.after-sales-dialog > h2 { text-align: center; margin-bottom: 20px; }
+.after-sales-dialog > p { margin-block: 20px; }
+.after-sales-form { display: grid; gap: 24px; }
+.after-sales-form label { display: grid; gap: 10px; }
+.after-sales-form textarea { width: 100%; min-height: 96px; }
+.after-sales-form fieldset { display: grid; gap: 20px; padding: 20px; border: 1px solid #73737f; border-radius: 10px; min-width: 0; }
+.after-sales-form legend { padding-inline: 8px; }
+.after-sales-form > .button, .after-sales-dialog > .dialog-cancel { justify-self: center; display: block; margin-inline: auto; }
+.after-sales-dialog > .dialog-cancel { margin-top: 20px; }
+.return-filters, .return-actions { display: flex; align-items: end; flex-wrap: wrap; gap: 20px; margin-block: 28px; }
+.return-filters label { display: grid; gap: 10px; }
+.return-items { display: grid; gap: 20px; margin-block: 24px; }
+.return-items > div { padding-bottom: 16px; border-bottom: 1px solid #ffffff24; }
+.return-items p { margin-top: 8px; }
+@media (max-width: 540px) { .after-sales-dialog { padding: 24px 20px; } .return-actions { flex-direction: column; align-items: stretch; } }
+
+.finishing-metrics { grid-template-columns: repeat(4,minmax(0,1fr)); gap: 20px; }
+.finishing-metrics .metric { min-width: 0; background: #202127; border: 1px solid #ffffff20; box-shadow: none; gap: 12px; padding: 24px; }
+.finishing-metrics .metric strong { color: #f6f3e8; overflow-wrap: anywhere; font-size: clamp(1.8rem,2.6vw,2.8rem); }
+.finishing-metrics .metric small { min-height: 40px; line-height: 1.5; }
+.metric-sparkline { width: 100%; height: 60px; color: rgb(var(--metric-color)); }
+.finishing-dashboard-primary { display: grid; grid-template-columns: minmax(0,2.5fr) minmax(260px,1fr); gap: 24px; align-items: start; }
+.finishing-dashboard-secondary { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; align-items: start; margin-block: 24px; }
+.finishing-dashboard-primary > *, .finishing-dashboard-secondary > * { min-width: 0; margin: 0; }
+.responsive-trend { width: 100%; min-width: 0; margin-top: 24px; }
+.responsive-trend svg { display: block; width: 100%; height: auto; min-height: 260px; }
+.responsive-trend text { fill: #c4c1cf; font: 12px 'Segoe UI',sans-serif; }
+.responsive-trend rect:focus { outline: 2px solid #fff; }
+.finishing-trend .panel-heading { align-items: start; gap: 20px; flex-wrap: wrap; }
+.finishing-trend .panel-heading p { margin-top: 8px; color: #bcbac8; line-height: 1.5; }
+.chart-readout { min-height: 48px; margin-block: 16px 24px; color: #c4c1cf; line-height: 1.6; }
+.finishing-trend details summary { cursor: pointer; min-height: 44px; padding-block: 12px; text-decoration: underline; }
+.fulfillment-progress { display: flex; align-items: center; gap: 16px; margin-block: 16px 24px; }
+.fulfillment-progress svg { width: 120px; flex-shrink: 0; }
+.fulfillment-progress text { fill: #f6f3e8; font: 600 26px 'Segoe UI',sans-serif; }
+.fulfillment-progress p { line-height: 1.8; }
+.fulfillment-rows { display: grid; gap: 16px; }
+.fulfillment-rows > a { display: grid; grid-template-columns: 1fr auto; gap: 8px 16px; padding-block: 4px; text-decoration: none; }
+.fulfillment-track { display: block; grid-column: 1 / -1; height: 5px; border-radius: 8px; background: #ffffff12; overflow: hidden; }
+.fulfillment-track > span { display: block; height: 100%; background: #f4da81; }
+.accounting-summary dl { margin-block: 24px; }
+.accounting-summary dl > div { display: flex; justify-content: space-between; gap: 20px; padding-block: 16px; border-bottom: 1px solid #ffffff20; }
+.accounting-summary dt { color: #c4c1cf; }
+.accounting-summary dd { margin: 0; font-weight: 700; text-align: right; }
+.accounting-summary p { margin-block: 20px; color: #bcbac8; line-height: 1.6; }
+@media (max-width: 1200px) { .finishing-metrics { grid-template-columns: repeat(2,minmax(0,1fr)); } .finishing-dashboard-secondary { grid-template-columns: repeat(2,minmax(0,1fr)); } .finishing-dashboard-primary { grid-template-columns: minmax(0,1fr); } }
+@media (max-width: 600px) { .finishing-dashboard-secondary { grid-template-columns: minmax(0,1fr); } .finishing-metrics .metric { padding: 20px; } .finishing-dashboard-primary .admin-panel, .finishing-dashboard-secondary .admin-panel { padding: 20px 16px; } .finishing-trend .chart-legend { flex-wrap: wrap; gap: 12px; } }
+@media (max-width: 360px) { .finishing-metrics { grid-template-columns: minmax(0,1fr); } }

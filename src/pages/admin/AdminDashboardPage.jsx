@@ -1,3 +1,4 @@
+import {SummaryMetrics,SalesTrend,FulfillmentSummary,AccountingSummary} from '../../components/admin/AnalyticsOverview'
 import LoadingLayout from '../../components/common/LoadingLayout'
 import Icon from '../../components/common/Icon'
 import { useState } from 'react'
@@ -61,7 +62,7 @@ function ForecastPanel() {
         <h2>Projected order value</h2>
         <strong>{formatPrice(data.dailyAverage)} / day</strong>
       </div>
-      <p>{data.method} · Completed order value, including unpaid orders.</p>
+      <p>{data.method} · Net delivered order value, including unpaid orders.</p>
       <p className="muted">Solid: observed · Dashed: projected · PHP</p>
       <svg
         className={`forecast-chart ${all.some((row) => row.value > 0) ? '' : 'is-empty'}`}
@@ -147,139 +148,7 @@ const analyticsViews = [
   ['forecast', 'Forecast', 'inventory'],
 ]
 
-function SalesChart({ data }) {
-  const maximum = Math.max(
-    1,
-    ...data.trend.map((day) => Math.max(day.orderValue, day.revenue)),
-  )
-  return (
-    <section className="admin-panel analytics-panel">
-      <div className="panel-heading">
-        <h2>Sales over time</h2>
-        <div className="chart-legend">
-          <span>Completed value</span>
-          <span>Paid revenue</span>
-        </div>
-      </div>
-      <div
-        className="chart-scroll"
-        tabIndex={0}
-        role="region"
-        aria-label="Daily sales chart"
-      >
-        <svg
-          className="sales-chart"
-          viewBox="0 0 1000 360"
-          role="img"
-          aria-label="Daily completed value bars and paid revenue line. Exact values below."
-        >
-          {[0, 1, 2, 3, 4].map((tick) => (
-            <g key={tick}>
-              <line
-                x1="100"
-                y1={300 - tick * 65}
-                x2="975"
-                y2={300 - tick * 65}
-                className="chart-guide"
-              />
-              <text x="84" y={305 - tick * 65} textAnchor="end">
-                {formatPrice((maximum * tick) / 4)}
-              </text>
-            </g>
-          ))}
-          {data.trend.map((day, index) => {
-            const width = 875 / Math.max(1, data.trend.length)
-            const height = (day.orderValue / maximum) * 260
-            return (
-              <rect
-                key={day.date}
-                x={100 + index * width + width * 0.2}
-                y={300 - height}
-                width={width * 0.6}
-                height={height}
-                rx="2"
-                className="sales-bar"
-              >
-                <title>
-                  {day.date}: {formatPrice(day.orderValue)}
-                </title>
-              </rect>
-            )
-          })}
-          <polyline
-            className="chart-paid"
-            points={data.trend
-              .map(
-                (day, index) =>
-                  100 +
-                  ((index + 0.5) * 875) / Math.max(1, data.trend.length) +
-                  ',' +
-                  (300 - (day.revenue / maximum) * 260),
-              )
-              .join(' ')}
-          />
-          {data.trend
-            .filter(
-              (_, index) =>
-                index === 0 ||
-                index === data.trend.length - 1 ||
-                index % Math.max(1, Math.ceil(data.trend.length / 4)) === 0,
-            )
-            .map((day) => {
-              const index = data.trend.indexOf(day)
-              return (
-                <text
-                  key={day.date}
-                  x={
-                    100 + ((index + 0.5) * 875) / Math.max(1, data.trend.length)
-                  }
-                  y="333"
-                  textAnchor="middle"
-                >
-                  {day.date.slice(5)}
-                </text>
-              )
-            })}
-        </svg>
-      </div>
-      {!data.trend.some((day) => day.orderValue || day.revenue) && (
-        <p className="analytics-empty">No completed sales in this period.</p>
-      )}
-      <details>
-        <summary>Daily values</summary>
-        <div
-          className="table-scroll"
-          role="region"
-          tabIndex={0}
-          aria-label="Daily sales values"
-        >
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">UTC date</th>
-                <th scope="col">Paid revenue</th>
-                <th scope="col">Completed value</th>
-                <th scope="col">Orders</th>
-                <th scope="col">Units</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.trend.map((day) => (
-                <tr key={day.date}>
-                  <td>{day.date}</td>
-                  <td>{formatPrice(day.revenue)}</td>
-                  <td>{formatPrice(day.orderValue)}</td>
-                  <td>{day.orders}</td>
-                  <td>{day.unitsSold}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </details>
-    </section>
-  )
-}
+function SalesChart({data}) { return <SalesTrend data={data}/> }
 
 function GameChart({ data }) {
   const max = Math.max(1, ...data.byGame.map((game) => game.unitsSold))
@@ -525,63 +394,7 @@ export default function AdminDashboardPage() {
             <span aria-hidden="true">—</span>
             <time dateTime={data.range.to}>{data.range.to}</time>
           </p>
-          <div className="metric-grid">
-            {[
-              [
-                'Paid revenue',
-                formatPrice(data.revenue),
-                'Completed and paid orders',
-                'analytics',
-                'gold',
-              ],
-              [
-                'Completed value',
-                formatPrice(data.orderValue),
-                'Includes unpaid completed orders',
-                'cards',
-                'mint',
-              ],
-              [
-                'Orders created',
-                data.orders,
-                'All order statuses',
-                'bag',
-                'lavender',
-              ],
-              [
-                'Average order',
-                formatPrice(data.averageOrderValue),
-                'Completed order value',
-                'overview',
-                'lavender',
-              ],
-              [
-                'Units sold',
-                data.unitsSold,
-                'Completed orders',
-                'cards',
-                'gold',
-              ],
-              [
-                'Low stock / out',
-                `${data.inventory.lowStock} / ${data.inventory.outOfStock}`,
-                `${data.inventory.active} active products`,
-                'inventory',
-                'coral',
-              ],
-            ]
-              .filter((_, index) => !analytics || index < 3)
-              .map(([label, value, hint, icon, tone]) => (
-                <article className={`metric metric-${tone}`} key={label}>
-                  <div className="metric-label">
-                    <span>{label}</span>
-                    <Icon name={icon} />
-                  </div>
-                  <strong>{value}</strong>
-                  <small>{hint}</small>
-                </article>
-              ))}
-          </div>
+          <SummaryMetrics data={data}/>
           {analytics ? (
             <>
               <div
@@ -615,7 +428,7 @@ export default function AdminDashboardPage() {
                 aria-labelledby={`tab-${view}`}
                 tabIndex={0}
               >
-                {view === 'sales' && <SalesChart data={data} />}
+                {view === 'sales' && <><div className="finishing-dashboard-primary"><SalesChart data={data}/><FulfillmentSummary data={data}/></div><div className="finishing-dashboard-secondary"><GameChart data={data}/><BestSellers data={data}/><AccountingSummary data={data}/></div><ForecastPanel/></>}
                 {view === 'games' && <GameChart data={data} />}
                 {view === 'bestsellers' && <BestSellers data={data} />}
                 {view === 'orders' && <RecentOrders data={data} statuses />}
@@ -624,8 +437,10 @@ export default function AdminDashboardPage() {
             </>
           ) : (
             <div className="overview-panels">
-              <SalesChart data={data} />
+              <div className="finishing-dashboard-primary"><SalesChart data={data}/><FulfillmentSummary data={data}/></div>
+              <div className="finishing-dashboard-secondary"><GameChart data={data}/><BestSellers data={data}/><AccountingSummary data={data}/></div>
               <RecentOrders data={data} />
+              <ForecastPanel/>
               <Link className="text-link" to="/admin/analytics">
                 Explore analytics <Icon name="arrow" />
               </Link>

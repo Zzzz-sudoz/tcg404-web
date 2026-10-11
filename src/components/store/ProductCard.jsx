@@ -2,6 +2,7 @@ import { Link } from 'react-router'
 import { formatPrice } from '../../data/store'
 import CardImage from './CardImage'
 import { useAuth } from '../../hooks/useAuth'
+import FavoriteButton from './FavoriteButton'
 
 export default function ProductCard({ product, quickAdd = false }) {
   const { user } = useAuth()
@@ -14,6 +15,7 @@ export default function ProductCard({ product, quickAdd = false }) {
 
   return (
     <article className={`product-card card-game-${product.game}`}>
+      <FavoriteButton product={product}/>
       <Link
         className="product-media"
         to={`/product/${product.slug}`}
@@ -44,7 +46,7 @@ export default function ProductCard({ product, quickAdd = false }) {
       {quickAdd && user?.role !== 'admin' &&
         (product.stock ? (
           <Link className="button quick-add" to={`/product/${product.slug}`}>
-            Add to cart
+            Select quantity
           </Link>
         ) : (
           <button className="button quick-add" disabled>

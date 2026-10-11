@@ -10,6 +10,7 @@ import ProductCard from '../../components/store/ProductCard'
 import NotFoundPage from './NotFoundPage'
 import SavedReference from '../../components/store/SavedReference'
 import Dialog from '../../components/common/Dialog'
+import FavoriteButton from '../../components/store/FavoriteButton'
 
 export default function ProductPage() {
   const { slug } = useParams()
@@ -82,6 +83,7 @@ function ProductDetail({ slug }) {
             {product.gameName} · {product.rarity}
           </p>
           <h1>{product.name}</h1>
+          <FavoriteButton product={product}/>
           <p className="detail-price">{formatPrice(product.price)}</p>
           <p className="muted">Store selling price · PHP</p>
           <SavedReference product={product} />

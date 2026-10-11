@@ -4,7 +4,7 @@ import { apiError } from '../../utils/api'
 import Dialog from './Dialog'
 import Icon from './Icon'
 
-export default function SignOutButton({ onSignedOut }) {
+export default function SignOutButton({ onSignedOut, showIcon = true }) {
   const { logout } = useAuth()
   const [open, setOpen] = useState(false)
   const [busy, setBusy] = useState(false)
@@ -37,7 +37,7 @@ export default function SignOutButton({ onSignedOut }) {
           setOpen(true)
         }}
       >
-        <Icon name="logout" />
+        {showIcon && <Icon name="logout" />}
         Logout
       </button>
       <Dialog

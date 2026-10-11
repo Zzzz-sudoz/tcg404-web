@@ -22,6 +22,7 @@ export default function AccountLayout() {
             ['', 'Overview', 'overview'],
             ['profile', 'Profile', 'user'],
             ['orders', 'Orders', 'bag'],
+            ['favorites', 'Favorites', 'heart'],
             ['cart', 'Cart', 'cards'],
             ['addresses', 'Addresses', 'location'],
             ['payments', 'Payment methods', 'payment'],

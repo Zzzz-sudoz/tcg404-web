@@ -6,6 +6,7 @@ import { api, apiError } from '../../utils/api'
 import { formatPrice } from '../../data/store'
 import { statusOptions, orderStatusLabel } from '../../utils/operations'
 import QueryState from '../../components/common/QueryState'
+import OrderAfterSales from '../../components/store/OrderAfterSales'
 import {
   paymentLabel,
   paymentMethodLabel,
@@ -22,6 +23,7 @@ export default function OrderDetailPage({ admin = false }) {
   const path = `${admin ? '/admin/orders' : '/orders'}/${id}`
   const response = useOrderQuery(path, '', admin)
   const order = response.data
+  const nextStatuses = order ? statusOptions(order.status).filter(status => status !== 'cancelled' || order.actions?.canCancel) : []
   const update = async (event) => {
     event.preventDefault()
     if (pending.current) return
@@ -166,19 +168,20 @@ export default function OrderDetailPage({ admin = false }) {
                 </div>
               ))}
               <h2>Payment details</h2>
+              <OrderAfterSales order={order} refresh={response.refresh} readOnly={admin}/>
               <p>{paymentMethodLabel(order.payment)}</p>
               {order.payment?.reference && (
                 <p className="payment-reference">
                   Reference: {order.payment.reference}
                 </p>
               )}
-              {admin && statusOptions(order.status).length > 0 && (
+              {admin && nextStatuses.length > 0 && (
                 <form className="order-status-form" onSubmit={update}>
                   <h2>Update order status</h2>
                   <label>
                     Status
                     <select name="status" disabled={saving}>
-                      {statusOptions(order.status).map((status) => (
+                      {nextStatuses.map((status) => (
                         <option key={status} value={status}>
                           {orderStatusLabel(status)}
                         </option>

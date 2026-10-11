@@ -28,6 +28,7 @@ export default function AdminLayout() {
             ['/products', 'Products', 'cards'],
             ['/card-import', 'Card import', 'import'],
             ['/orders', 'Manage orders', 'bag'],
+            ['/returns', 'Returns', 'inventory'],
             ['/analytics', 'Analytics', 'analytics'],
             ['/inventory', 'Inventory', 'inventory'],
           ].map(([path, label, icon]) => (
@@ -47,6 +48,7 @@ export default function AdminLayout() {
             Back to store
           </Link>
           <SignOutButton
+            showIcon={false}
             onSignedOut={() => navigate('/login', { replace: true })}
           />
         </div>

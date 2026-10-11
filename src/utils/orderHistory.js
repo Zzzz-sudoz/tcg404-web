@@ -3,7 +3,7 @@ export const orderCategories = [
   ['Orders', 'pending'],
   ['Processing', 'processing'],
   ['To be delivered', 'shipped'],
-  ['Completed', 'completed'],
+  ['Delivered', 'completed'],
   ['Canceled', 'cancelled'],
   ['Delayed', 'delayed'],
 ]

@@ -62,7 +62,6 @@ export default function AuthPage({ register = false }) {
   return (
     <div className="page-width workshop-page auth-page">
       <header className="page-intro">
-        <p className="eyebrow">TCG404</p>
         <h1>{register ? 'Create account.' : 'Welcome back.'}</h1>
       </header>
       <form className="editor-panel auth-form" onSubmit={submit}>
