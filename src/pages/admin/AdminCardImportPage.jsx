@@ -397,7 +397,7 @@ export default function AdminCardImportPage() {
               disabled={!selected.length || blocked}
               onClick={beginReview}
             >
-              Review selection →
+              Review selection
             </button>
             <Link to="/admin/products">View store inventory</Link>
           </div>

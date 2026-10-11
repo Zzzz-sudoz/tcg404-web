@@ -44,7 +44,7 @@ export default function AdminLayout() {
         </nav>
         <div className="admin-sidebar-actions">
           <Link className="button button-secondary" to="/">
-            ← Back to store
+            Back to store
           </Link>
           <SignOutButton
             onSignedOut={() => navigate('/login', { replace: true })}

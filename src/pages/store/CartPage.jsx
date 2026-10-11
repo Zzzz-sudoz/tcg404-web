@@ -101,6 +101,11 @@ export default function CartPage() {
                       }
                     />
                   </label>
+                  {line.product && (
+                    <p className="muted">
+                      Stock: {line.product.stock} available. Limit: {Math.min(10, line.product.stock)} per card.
+                    </p>
+                  )}
                   {errors[line.id] && (
                     <p role="alert" className="field-error">
                       {errors[line.id]}
@@ -145,7 +150,7 @@ export default function CartPage() {
             <p>Choose your payment method and delivery address at checkout.</p>
             {summary.valid && !inventory.loading && !inventory.error ? (
               <Link className="button button-primary" to="/checkout">
-                Review checkout →
+                Review checkout
               </Link>
             ) : (
               <p role="alert">

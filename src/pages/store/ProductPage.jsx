@@ -9,6 +9,7 @@ import CardImage from '../../components/store/CardImage'
 import ProductCard from '../../components/store/ProductCard'
 import NotFoundPage from './NotFoundPage'
 import SavedReference from '../../components/store/SavedReference'
+import Dialog from '../../components/common/Dialog'
 
 export default function ProductPage() {
   const { slug } = useParams()
@@ -17,7 +18,7 @@ export default function ProductPage() {
 
 function ProductDetail({ slug }) {
   const { user } = useAuth()
-  const { products, addToCart, rememberProducts } = usePrototype()
+  const { products, cart, addToCart, rememberProducts } = usePrototype()
   const [revision, setRevision] = useState(0)
   const response = useApiQuery(
     `/products/${encodeURIComponent(slug)}`,
@@ -35,6 +36,7 @@ function ProductDetail({ slug }) {
   }, [product, rememberProducts])
   const [quantity, setQuantity] = useState(1)
   const [message, setMessage] = useState('')
+  const [added, setAdded] = useState(false)
   if (response.loading && !product)
     return (
       <div className="page-width workshop-page">
@@ -51,6 +53,8 @@ function ProductDetail({ slug }) {
         </button>
       </div>
     )
+  const inCart = cart.find((item) => item.id === product.id)?.quantity || 0
+  const remaining = Math.max(0, Math.min(10, product.stock) - inCart)
   const related = products
     .filter(
       (p) =>
@@ -112,9 +116,9 @@ function ProductDetail({ slug }) {
               className="add-cart-form"
               onSubmit={(e) => {
                 e.preventDefault()
-                setMessage(
-                  addToCart(product.id, quantity) || 'Added to your cart.',
-                )
+                const error = addToCart(product.id, quantity)
+                setMessage(error)
+                if (!error) setAdded(true)
               }}
             >
               <label>
@@ -122,31 +126,46 @@ function ProductDetail({ slug }) {
                 <input
                   type="number"
                   min="1"
-                  max={Math.min(10, product.stock || 1)}
+                  max={Math.max(1, remaining)}
                   step="1"
                   value={quantity}
                   onChange={(e) => setQuantity(Number(e.target.value))}
-                  disabled={!product.stock}
+                  disabled={!remaining}
                 />
               </label>
-              <button className="button button-primary" disabled={!product.stock}>
-                {product.stock ? 'Add to cart' : 'Out of stock'}
+              <button className="button button-primary" disabled={!remaining}>
+                {!product.stock ? 'Out of stock' : remaining ? 'Add to cart' : 'In your cart'}
               </button>
             </form>
           )}
+          {user?.role !== 'admin' && inCart > 0 && (
+            <p>{inCart} in your cart. {remaining === 0 && (
+              product.stock <= inCart ? 'All available stock is already in your cart.' : 'The limit is 10 per card.'
+            )}</p>
+          )}
           <p role="status">{message}</p>
-          {user?.role !== 'admin' && message === 'Added to your cart.' && (
+          {user?.role !== 'admin' && inCart > 0 && (
             <Link className="text-link" to="/cart">
-              View your cart →
+              Check cart
             </Link>
           )}
+          <Dialog
+            open={added}
+            onClose={() => setAdded(false)}
+            labelledBy="cart-added-title"
+            className="cart-added-dialog"
+            cancelLabel="Continue shopping"
+          >
+            <h2 id="cart-added-title">Item added to cart</h2>
+            <Link className="button button-primary" to="/cart">Check cart</Link>
+          </Dialog>
         </section>
       </div>
       {related.length > 0 && (
         <section className="related-section">
           <div className="section-heading">
             <h2>More from this world.</h2>
-            <Link to={`/shop?game=${product.game}`}>Explore the game →</Link>
+            <Link to={`/shop?game=${product.game}`}>Explore the game</Link>
           </div>
           <div className="product-grid">
             {related.map((p) => (

@@ -97,14 +97,27 @@ export function addCartItem(cart, products, id, quantity) {
     product.isActive === false ||
     !Number.isSafeInteger(quantity) ||
     quantity < 1 ||
-    quantity + current > 10 ||
+    quantity > 10 ||
     (current === 0 && cart.length >= 50) ||
     !Number.isFinite(product.price) ||
     product.price < 0 ||
-    !Number.isSafeInteger(product.stock) ||
-    quantity + current > product.stock
+    !Number.isSafeInteger(product.stock)
   )
     return { cart, error: 'Choose 1 to 10 per card, within available stock.' }
+  const remaining = Math.max(0, Math.min(10, product.stock) - current)
+  if (quantity > remaining)
+    return {
+      cart,
+      error: current
+        ? `You already have ${current} in your cart. ${
+            current >= 10
+              ? 'The limit is 10 per card.'
+              : remaining
+                ? `You can add up to ${remaining} more.`
+                : 'No more available to add.'
+          }`
+        : `Only ${product.stock} available. Reduce the quantity.`,
+    }
   return {
     cart: [
       ...cart.filter((p) => p.id !== id),
