@@ -69,6 +69,8 @@ dialog.signout-dialog {
   margin-top: auto;
   padding-top: 32px;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
   gap: 12px;
 }
 .admin-sidebar-actions > .button,

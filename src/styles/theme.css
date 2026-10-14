@@ -75,12 +75,14 @@
   color: #23212d;
 }
 .admin-identity { flex-wrap: wrap; }
-.admin-theme-choice { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.admin-theme-choice { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; min-width: 0; font-size: 0.85rem; }
+.admin-theme-choice .theme-toggle { margin-left: auto; }
 
 .store-navigation-row { display: flex; align-items: center; gap: 24px; }
 .store-navigation-row .store-nav { flex: 1; width: auto; margin: 0; padding-inline: 0; }
 .navigation-theme-toggle { margin-left: auto; }
 @media (max-width: 1099px) {
+  .admin-theme-choice { grid-column: 1 / -1; }
   .store-navigation-row { flex-wrap: wrap; gap: 0; }
   .store-navigation-row .store-nav { flex-basis: 100%; }
 }
