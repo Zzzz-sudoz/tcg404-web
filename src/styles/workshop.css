@@ -333,7 +333,7 @@ button:disabled {
   gap: 12px;
   margin-block: 12px;
 }
-.cart-line input {
+.cart-line input[type='number'] {
   width: 80px;
 }
 .cart-remove {

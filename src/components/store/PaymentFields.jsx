@@ -5,11 +5,10 @@ export default function PaymentFields({
   onChange,
   errors,
   disabled,
-  onFieldChange,
+  onFieldBlur,
 }) {
   const update = (key, next) => {
-    onChange((current) => ({ ...current, [key]: next }))
-    onFieldChange(key)
+    onChange({ ...value, [key]: next }, key)
   }
   const brand = cardBrand(value.number)
   return (
@@ -90,6 +89,7 @@ export default function PaymentFields({
                   placeholder={placeholder}
                   maxLength={maxLength}
                   required
+                  onBlur={() => onFieldBlur(key)}
                   onChange={(event) => {
                     let next = event.target.value
                     if (key === 'number')
@@ -140,6 +140,7 @@ export default function PaymentFields({
               required
               value={value.mobile}
               onChange={(event) => update('mobile', event.target.value)}
+              onBlur={() => onFieldBlur('mobile')}
               aria-invalid={!!errors.mobile}
               aria-describedby={
                 errors.mobile ? 'payment-error-mobile' : undefined

@@ -25,6 +25,7 @@ export default function CheckoutPage() {
   const summary = summarizeCart(cart, products)
   const inventory = useCartInventory()
   const [errors, setErrors] = useState({})
+  const [attempted, setAttempted] = useState(false)
   const [message, setMessage] = useState('')
   const confirmation =
     orderRequest?.ownerId === user.id ? orderRequest.receipt : null
@@ -94,20 +95,26 @@ export default function CheckoutPage() {
     return () => clearTimeout(timer)
   }, [saved.data, orderRequest, user.id])
   const blocked = !summary.valid || inventory.loading || !!inventory.error
-  const clearError = (key) =>
-    setErrors((current) =>
-      Object.fromEntries(
-        Object.entries(current).filter(([field]) => field !== key),
-      ),
-    )
+  const setFieldError = (key, issue) => setErrors((current) => {
+    const next = { ...current }
+    if (issue) next[key] = issue
+    else delete next[key]
+    return next
+  })
   const updateField = (key, value) => {
     touched.current.add(key)
-    setFields((current) => ({ ...current, [key]: value }))
-    clearError(key)
+    const next = { ...fields, [key]: value }
+    setFields(next)
+    setFieldError(key, validateCheckout(next)[key])
+  }
+  const blurField = (key) => {
+    touched.current.add(key)
+    setFieldError(key, validateCheckout(fields)[key])
   }
   const submit = async (event) => {
     event.preventDefault()
     if (pending.current || saving || blocked) return
+    setAttempted(true)
     const issues = {
       ...validateCheckout(fields),
       ...Object.fromEntries(
@@ -257,13 +264,18 @@ export default function CheckoutPage() {
                         Object.keys(address).forEach((key) =>
                           touched.current.add(key),
                         )
-                        setFields((current) => ({
-                          ...current,
+                        const next = {
+                          ...fields,
                           ...Object.fromEntries(
                             Object.entries(address).filter(([key]) =>
-                              Object.hasOwn(current, key),
+                              Object.hasOwn(fields, key),
                             ),
                           ),
+                        }
+                        setFields(next)
+                        setErrors((current) => ({
+                          ...Object.fromEntries(Object.entries(current).filter(([key]) => key.startsWith('payment-'))),
+                          ...validateCheckout(next),
                         }))
                       }
                     }}
@@ -298,6 +310,7 @@ export default function CheckoutPage() {
                         number: '',
                         cvc: '',
                       }))
+                      setErrors((current) => Object.fromEntries(Object.entries(current).filter(([key]) => !key.startsWith('payment-'))))
                     }}
                   >
                     <option value="">Use another method</option>
@@ -330,6 +343,7 @@ export default function CheckoutPage() {
                   maxLength={maxLength}
                   value={fields[key]}
                   onChange={(event) => updateField(key, event.target.value)}
+                  onBlur={() => blurField(key)}
                   aria-invalid={!!errors[key]}
                   aria-describedby={errors[key] ? `checkout-${key}` : undefined}
                 />
@@ -357,6 +371,7 @@ export default function CheckoutPage() {
                   maxLength={500}
                   value={fields[key]}
                   onChange={(event) => updateField(key, event.target.value)}
+                  onBlur={() => blurField(key)}
                   aria-invalid={!!errors[key]}
                   aria-describedby={errors[key] ? `checkout-${key}` : undefined}
                 />
@@ -385,6 +400,7 @@ export default function CheckoutPage() {
                     disabled={saving}
                     required
                     onChange={(event) => updateField(key, event.target.value)}
+                    onBlur={() => blurField(key)}
                     aria-invalid={!!errors[key]}
                     aria-describedby={
                       errors[key] ? `checkout-${key}` : undefined
@@ -410,11 +426,9 @@ export default function CheckoutPage() {
             </div>
             <PaymentFields
               value={payment}
-              onChange={(next) => {
+              onChange={(next, key) => {
                 paymentTouched.current = true
                 setPayment(next)
-              }}
-              onFieldChange={(key) => {
                 if (key === 'method')
                   setErrors((current) =>
                     Object.fromEntries(
@@ -423,7 +437,11 @@ export default function CheckoutPage() {
                       ),
                     ),
                   )
-                else clearError(`payment-${key}`)
+                else setFieldError(`payment-${key}`, validatePayment(next)[key])
+              }}
+              onFieldBlur={(key) => {
+                paymentTouched.current = true
+                setFieldError(`payment-${key}`, validatePayment(payment)[key])
               }}
               disabled={saving}
               errors={Object.fromEntries(
@@ -436,10 +454,10 @@ export default function CheckoutPage() {
               ref={errorSummary}
               tabIndex={-1}
               className="field-error"
-              role={message || Object.keys(errors).length ? 'alert' : undefined}
+              role={message || (attempted && Object.keys(errors).length) ? 'alert' : undefined}
             >
               {message && <p>{message}</p>}
-              {Object.keys(errors).length > 0 && (
+              {attempted && Object.keys(errors).length > 0 && (
                 <>
                   <p>Check the highlighted details to continue.</p>
                   <ul>

@@ -48,11 +48,11 @@ export function validatePayment(payment) {
     }, 0)
     if (
       !/^[\d -]+$/.test(payment.number || '') ||
-      !/^\d{13,19}$/.test(digits) ||
+      !/^\d{12,19}$/.test(digits) ||
       /^0+$/.test(digits) ||
       checksum % 10 !== 0
     )
-      errors.number = 'Enter a valid card number of 13 to 19 digits.'
+      errors.number = 'Enter a valid card number of 12 to 19 digits.'
     if (!payment.holder?.trim() || payment.holder.trim().length > 100)
       errors.holder = 'Enter the name on your card.'
     const expiry = /^(0[1-9]|1[0-2])\/(\d{2})$/.exec(payment.expiry || '')
