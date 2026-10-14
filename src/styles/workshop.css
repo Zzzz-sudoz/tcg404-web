@@ -44,10 +44,9 @@
   align-items: center;
   gap: 24px;
   padding: 32px;
-  border: 1px solid #77788755;
+  border: 1px solid light-dark(rgb(165 158 145 / 0.333), #77788755);
   border-radius: 20px;
-  background:
-    linear-gradient(115deg, #202128f5 50%, #3d3d46c9),
+  background: linear-gradient(115deg, light-dark(hsl(42 20% 95% / 0.961), #202128f5) 50%, light-dark(hsl(42 20% 92% / 0.788), #3d3d46c9)),
     url('/collector-backdrop.png') center/cover;
 }
 .edition-stamp {
@@ -56,12 +55,12 @@
   width: 150px;
   aspect-ratio: 1;
   flex-shrink: 0;
-  border: 1px solid #aaa8b16b;
+  border: 1px solid light-dark(rgb(165 158 145 / 0.420), #aaa8b16b);
   border-radius: 50%;
   font: 700 4rem var(--font-display);
-  color: #ddd8c9;
+  color: light-dark(rgb(39 38 35), #ddd8c9);
   transform: rotate(-12deg);
-  box-shadow: inset 0 0 0 7px #ffffff06;
+  box-shadow: inset 0 0 0 7px light-dark(rgb(39 38 35 / 0.024), #ffffff06);
 }
 .edition-stamp small {
   font: 0.55rem var(--font-mono);
@@ -74,7 +73,7 @@
   align-items: start;
 }
 .filter-panel {
-  background: #202128;
+  background: light-dark(#fffefb, #202128);
   padding: 22px;
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -115,7 +114,7 @@
   min-height: 44px;
   border: 1px solid var(--control-border);
   border-radius: 6px;
-  background: #17181e;
+  background: light-dark(#fffefb, #17181e);
   color: var(--ink);
   padding: 10px 12px;
   font: inherit;
@@ -200,7 +199,7 @@ button:disabled {
 }
 .empty-panel {
   padding: 48px 28px;
-  background: #202128;
+  background: light-dark(#fffefb, #202128);
   border: 1px solid var(--border);
   border-radius: 12px;
   display: grid;
@@ -233,9 +232,9 @@ button:disabled {
   flex-direction: column;
   align-items: center;
   gap: 24px;
-  border: 1px solid #aaa8b166;
+  border: 1px solid light-dark(rgb(165 158 145 / 0.400), #aaa8b166);
   border-radius: 20px;
-  background: linear-gradient(125deg, #64616a35, #202128 40%, #66616c40);
+  background: linear-gradient(125deg, light-dark(hsl(42 20% 88% / 0.208), #64616a35), light-dark(#fffefb, #202128) 40%, light-dark(hsl(42 20% 88% / 0.251), #66616c40));
   perspective: 1000px;
   position: relative;
   overflow: hidden;
@@ -316,7 +315,7 @@ button:disabled {
   display: grid;
   grid-template-columns: 100px minmax(0, 1fr) auto;
   gap: 24px;
-  background: #202128;
+  background: light-dark(#fffefb, #202128);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 24px;
@@ -350,15 +349,15 @@ button:disabled {
   border: 0;
   border-radius: 6px;
   background: transparent;
-  color: #ff8796;
+  color: light-dark(hsl(353 70% 30%), #ff8796);
   cursor: pointer;
 }
 .cart-remove:hover {
-  background: #ffffff08;
-  color: #ffb0ba;
+  background: light-dark(rgb(39 38 35 / 0.031), #ffffff08);
+  color: light-dark(hsl(352 70% 30%), #ffb0ba);
 }
 .cart-remove:active {
-  background: #ffffff10;
+  background: light-dark(rgb(39 38 35 / 0.063), #ffffff10);
 }
 .cart-remove svg {
   flex-shrink: 0;
@@ -378,7 +377,7 @@ button:disabled {
 .order-summary,
 .editor-panel,
 .confirmation-panel {
-  background: #202128;
+  background: light-dark(#fffefb, #202128);
   border: 1px solid var(--border);
   padding: 28px;
   border-radius: 12px;
@@ -386,7 +385,7 @@ button:disabled {
 .order-summary {
   display: grid;
   gap: 22px;
-  border-top: 3px solid #b9b5c1;
+  border-top: 3px solid light-dark(rgb(119 112 101), #b9b5c1);
 }
 .order-summary h2,
 .editor-panel h2,
@@ -427,22 +426,22 @@ button:disabled {
   margin-top: 24px;
 }
 .field-error {
-  color: #ffb3a6;
+  color: light-dark(hsl(9 70% 30%), #ffb3a6);
   font-size: 0.85rem;
 }
 [aria-invalid='true'] {
-  border-color: #ffb3a6 !important;
+  border-color: light-dark(hsl(9 45% 38%), #ffb3a6) !important;
 }
 .admin-shell {
   display: grid;
   grid-template-columns: 230px minmax(0, 1fr);
   min-height: 100vh;
-  background: #18191f;
+  background: light-dark(hsl(42 20% 95%), #18191f);
 }
 .admin-sidebar {
   padding: 30px 22px;
   border-right: 1px solid var(--border);
-  background: #111217;
+  background: light-dark(#eeeae2, #111217);
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -460,10 +459,10 @@ button:disabled {
   padding: 14px 12px;
   min-height: 48px;
   border-radius: 6px;
-  color: #c5c2d1;
+  color: light-dark(rgb(98 95 89), #c5c2d1);
 }
 .admin-sidebar nav a.active {
-  background: #292a33;
+  background: light-dark(#eeeae2, #292a33);
   color: var(--accent);
   box-shadow: inset 3px 0 var(--accent);
 }
@@ -486,10 +485,10 @@ button:disabled {
 .status-chip {
   display: inline-block;
   font: 0.7rem var(--font-mono);
-  border: 1px solid #777887;
+  border: 1px solid light-dark(rgb(119 112 101), #777887);
   padding: 6px 8px;
   border-radius: 4px;
-  color: #e1ded0;
+  color: light-dark(rgb(39 38 35), #e1ded0);
 }
 .admin-page {
   padding: 36px 32px 64px;
@@ -520,16 +519,16 @@ button:disabled {
 }
 .metric {
   padding: 24px;
-  background: linear-gradient(130deg, #40404950, #24252d 45%, #1e1f26);
-  border: 1px solid #65657177;
+  background: linear-gradient(130deg, light-dark(hsl(42 20% 92% / 0.314), #40404950), light-dark(hsl(42 20% 94%), #24252d) 45%, light-dark(hsl(42 20% 95%), #1e1f26));
+  border: 1px solid light-dark(rgb(165 158 145 / 0.467), #65657177);
   border-radius: 10px;
   display: grid;
   gap: 14px;
-  box-shadow: inset 0 1px #ffffff13;
+  box-shadow: inset 0 1px light-dark(rgb(39 38 35 / 0.075), #ffffff13);
 }
 .metric > span {
   font-size: 0.85rem;
-  color: #d6d3dc;
+  color: light-dark(rgb(39 38 35), #d6d3dc);
 }
 .metric strong {
   font: 600 clamp(2rem, 3vw, 2.8rem) var(--font-display);
@@ -544,7 +543,7 @@ button:disabled {
   gap: 24px;
 }
 .admin-panel {
-  background: #202128;
+  background: light-dark(#fffefb, #202128);
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 24px;
@@ -589,7 +588,7 @@ button:disabled {
 .bar-track span {
   display: block;
   width: 65%;
-  background: linear-gradient(90deg, #b9a863, var(--accent));
+  background: linear-gradient(90deg, #b9a863, var(--accent-fill));
   border-radius: 6px 6px 0 0;
 }
 .chart-column small {
@@ -689,8 +688,8 @@ td small {
 }
 dialog {
   color: var(--ink);
-  background: #24252d;
-  border: 1px solid #aaa8b1;
+  background: light-dark(hsl(42 20% 94%), #24252d);
+  border: 1px solid light-dark(rgb(119 112 101), #aaa8b1);
   border-radius: 12px;
   padding: 32px;
   max-width: min(520px, calc(100% - 32px));
@@ -738,12 +737,12 @@ dialog.cart-added-dialog {
   object-fit: contain;
 }
 .product-proof {
-  border-top: 2px solid #c7c2cd;
+  border-top: 2px solid light-dark(rgb(119 112 101), #c7c2cd);
 }
 .import-notice {
   padding: 18px 24px;
   border-left: 3px solid var(--accent);
-  background: #28272b;
+  background: light-dark(hsl(42 20% 94%), #28272b);
   margin-bottom: 24px;
 }
 .import-notice p {
@@ -758,7 +757,7 @@ dialog.cart-added-dialog {
 }
 .import-card {
   border: 1px solid var(--border);
-  background: #202128;
+  background: light-dark(#fffefb, #202128);
   border-radius: 12px;
   padding: 20px;
 }
@@ -778,7 +777,7 @@ dialog.cart-added-dialog {
 .import-art {
   height: 240px;
   margin-top: 14px;
-  background: #292a33;
+  background: light-dark(#eeeae2, #292a33);
   padding: 18px;
   border-radius: 8px;
 }
@@ -794,7 +793,7 @@ dialog.cart-added-dialog {
 }
 .import-selection-bar {
   margin-top: 24px;
-  background: #292a33;
+  background: light-dark(#eeeae2, #292a33);
   padding: 20px 24px;
   border-radius: 10px;
   display: flex;
@@ -1069,13 +1068,13 @@ button.text-link:hover {
   color: var(--accent);
 }
 .button:not(.button-primary) {
-  background: #292a33;
+  background: light-dark(#eeeae2, #292a33);
   border-color: var(--control-border);
   color: var(--ink);
 }
 .button:not(.button-primary):hover {
-  background: #353640;
-  border-color: #b7b6c3;
+  background: light-dark(hsl(42 20% 92%), #353640);
+  border-color: light-dark(rgb(119 112 101), #b7b6c3);
 }
 .detail-stage .card-image {
   min-height: 0;
@@ -1129,7 +1128,7 @@ button.text-link:hover {
   padding: 16px;
   border: 1px solid var(--control-border);
   border-radius: 12px;
-  background: #17181e;
+  background: light-dark(#fffefb, #17181e);
   cursor: pointer;
 }
 .payment-option.is-selected {
@@ -1166,20 +1165,19 @@ button.text-link:hover {
   max-width: 430px;
   margin-inline: auto;
   padding: clamp(20px, 4vw, 30px);
-  border: 1px solid #ececf3;
+  border: 1px solid light-dark(rgb(119 112 101), #ececf3);
   border-radius: 18px;
   background-color: #cbd0d8;
   background-image: linear-gradient(
     125deg,
-    #ffffff80,
+    light-dark(rgb(39 38 35 / 0.502), #ffffff80),
     transparent 38%,
-    #81899555 55%,
-    #ffffffaa 78%,
+    light-dark(rgb(39 38 35 / 0.333), #81899555) 55%,
+    light-dark(rgb(39 38 35 / 0.667), #ffffffaa) 78%,
     transparent
   );
-  box-shadow:
-    0 16px 30px #0004,
-    inset 0 1px #fff;
+  box-shadow: 0 16px 30px #0004,
+    inset 0 1px light-dark(rgb(39 38 35), #fff);
   color: #17181e;
   transform: perspective(900px) rotateY(-3deg);
 }
@@ -1191,9 +1189,9 @@ button.text-link:hover {
 .payment-chip {
   width: 42px;
   height: 32px;
-  border: 1px solid #6c624d;
+  border: 1px solid light-dark(rgb(165 158 145), #6c624d);
   border-radius: 7px;
-  background: repeating-linear-gradient(0deg, #c4b47a 0 9px, #887a4f 10px 11px);
+  background: repeating-linear-gradient(0deg, #c4b47a 0 9px, light-dark(hsl(42 20% 88%), #887a4f) 10px 11px);
 }
 .payment-card-number {
   font: 600 clamp(0.95rem, 3vw, 1.4rem) var(--font-mono);
@@ -1206,9 +1204,9 @@ button.text-link:hover {
   display: grid;
   gap: 16px;
   padding: 24px;
-  border: 1px solid #666f8a;
+  border: 1px solid light-dark(rgb(119 112 101), #666f8a);
   border-radius: 16px;
-  background: linear-gradient(130deg, #253046, #1c202c);
+  background: linear-gradient(130deg, light-dark(hsl(42 20% 93%), #253046), light-dark(hsl(42 20% 95%), #1c202c));
 }
 .gcash-entry h3 {
   margin: 0;
@@ -1266,8 +1264,7 @@ button.text-link:hover {
 }
 .stock-editor {
   display: grid;
-  grid-template-columns:
-    minmax(160px, 1.5fr) minmax(100px, 0.7fr) minmax(120px, 0.8fr)
+  grid-template-columns: minmax(160px, 1.5fr) minmax(100px, 0.7fr) minmax(120px, 0.8fr)
     minmax(140px, 1fr) auto;
   gap: 16px;
   align-items: end;

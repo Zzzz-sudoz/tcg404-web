@@ -1,0 +1,85 @@
+:root {
+  --accent-fill: #f4da81;
+  --accent-fill-hover: #ffe8a2;
+  --lavender-fill: #c5b6f1;
+  --chart-mint: light-dark(#216653, #9cdbcb);
+  --chart-track: light-dark(#27262318, #ffffff15);
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 76px;
+  min-height: 44px;
+  padding: 2px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  border-radius: 24px;
+}
+.theme-toggle-track {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 72px;
+  height: 40px;
+  padding: 0 9px;
+  border: 1px solid var(--control-border);
+  border-radius: 22px;
+  background: linear-gradient(115deg, #f5da86, #ede6d4);
+  color: #514021;
+  transition: background 250ms;
+}
+.theme-toggle[aria-checked='true'] .theme-toggle-track {
+  background: linear-gradient(115deg, #363348, #15161b);
+  color: #f4da81;
+}
+.theme-toggle-track > svg { width: 17px; height: 17px; }
+.theme-toggle-thumb {
+  position: absolute;
+  inset: 3px auto auto 3px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #fffaf0;
+  color: #806009;
+  box-shadow: 0 1px 4px #00000030;
+  transition: transform 250ms ease, background-color 250ms ease;
+}
+.theme-toggle[aria-checked='true'] .theme-toggle-thumb {
+  transform: translateX(32px);
+  background: #f4da81;
+  color: #23212d;
+}
+.admin-identity { flex-wrap: wrap; }
+
+@media (max-width: 1099px) {
+  .global-search { flex: 1 1 calc(100% - 92px); width: calc(100% - 92px); }
+  .header-theme-toggle { order: 3; }
+}
+
+/* Keep the wipe on the page snapshot so artwork colors stay intact. */
+::view-transition-old(root) { animation: none; }
+::view-transition-new(root) {
+  animation: theme-reveal 550ms ease-in-out both;
+  mask-image: linear-gradient(to right, #000 45%, transparent 55%);
+  mask-size: 240% 100%;
+}
+@keyframes theme-reveal {
+  from { mask-position: 100% 0; }
+  to { mask-position: 0 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle-thumb { transition: none; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; mask-image: none; }
+}
+
+:root[data-theme='light'] .metric-gold { --metric-color: 128, 96, 9; }
+:root[data-theme='light'] .metric-mint { --metric-color: 33, 102, 83; }
+:root[data-theme='light'] .metric-lavender { --metric-color: 99, 64, 156; }
+:root[data-theme='light'] .metric-coral { --metric-color: 159, 48, 41; }

@@ -34,6 +34,7 @@ import './App.css'
 import './styles/workshop.css'
 import './styles/collector-operations.css'
 import './styles/customer-workspace.css'
+import './styles/theme.css'
 
 const AuthPage = lazy(() => import('./pages/store/AuthPage'))
 

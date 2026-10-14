@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router'
 import { useAuth } from '../hooks/useAuth'
 import Icon from '../components/common/Icon'
+import ThemeToggle from '../components/common/ThemeToggle'
 import SignOutButton from '../components/common/SignOutButton'
 export default function AdminLayout() {
   const { user } = useAuth()
@@ -57,6 +58,7 @@ export default function AdminLayout() {
         <header className="admin-topbar">
           <span>TCG404 / OPERATIONS</span>
           <span className="admin-identity">
+            <ThemeToggle />
             <Icon name="user" />
             {user.name}
             <span className="status-chip">Admin</span>

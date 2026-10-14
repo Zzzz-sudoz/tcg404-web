@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router'
 import Icon from '../components/common/Icon'
+import ThemeToggle from '../components/common/ThemeToggle'
 import { usePrototype } from '../hooks/usePrototype'
 import { useAuth } from '../hooks/useAuth'
 
@@ -71,6 +72,7 @@ function StoreHeader() {
             <Icon name="arrow" />
           </button>
         </form>
+        <ThemeToggle className="header-theme-toggle" />
         <div className="header-actions">
           {!isAdmin && (
             <Link className="utility-link" to="/cart" onClick={closeMenu}>

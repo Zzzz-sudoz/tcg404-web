@@ -10,13 +10,13 @@
 .loading-surface {
   min-width: 0;
   padding: 20px;
-  border: 1px solid var(--border, #41424d);
+  border: 1px solid var(--border, light-dark(rgb(165 158 145), #41424d));
   border-radius: 18px;
-  background: linear-gradient(135deg, #c6b5ec12, #f5d96f08 40%, #202127);
+  background: linear-gradient(135deg, #c6b5ec12, #f5d96f08 40%, light-dark(#fffefb, #202127));
 }
 .loading-art,
 .loading-line {
-  background: #a9a8bd1a;
+  background: light-dark(rgb(39 38 35 / 0.102), #a9a8bd1a);
   border-radius: 10px;
 }
 .loading-art {

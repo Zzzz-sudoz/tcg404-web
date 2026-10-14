@@ -22,23 +22,23 @@
 :root {
   font-size: 106.25%;
   font-family: 'Segoe UI', Arial, sans-serif;
-  color: #f6f3ea;
-  background: #15161b;
+  color: light-dark(rgb(39 38 35), #f6f3ea);
+  background: light-dark(#f6f3ed, #15161b);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  --background: #15161b;
-  --surface: #202128;
-  --media: #292a33;
-  --ink: #f6f3ea;
-  --muted: #b7b6c3;
-  --border: #3c3d49;
-  --control-border: #777887;
-  --accent: #f4da81;
-  --accent-hover: #ffe8a2;
-  --lavender: #c5b6f1;
-  --dark: #111217;
-  --dark-muted: #c5c2d1;
+  --background: light-dark(#f6f3ed, #15161b);
+  --surface: light-dark(#fffefb, #202128);
+  --media: light-dark(#eeeae2, #292a33);
+  --ink: light-dark(rgb(39 38 35), #f6f3ea);
+  --muted: light-dark(rgb(98 95 89), #b7b6c3);
+  --border: light-dark(rgb(165 158 145), #3c3d49);
+  --control-border: light-dark(rgb(119 112 101), #777887);
+  --accent: light-dark(hsl(46 70% 30%), #f4da81);
+  --accent-hover: light-dark(hsl(45 70% 30%), #ffe8a2);
+  --lavender: light-dark(hsl(255 68% 30%), #c5b6f1);
+  --dark: light-dark(#eeeae2, #111217);
+  --dark-muted: light-dark(rgb(98 95 89), #c5c2d1);
   --radius-small: 6px;
   --radius-control: 12px;
   --radius-panel: 20px;
@@ -77,8 +77,7 @@ button {
 }
 button,
 a {
-  transition:
-    color var(--duration),
+  transition: color var(--duration),
     background-color var(--duration),
     border-color var(--duration),
     transform var(--duration),
@@ -128,7 +127,7 @@ main:focus {
   left: 8px;
   transform: translateY(-150%);
   z-index: 20;
-  background: var(--accent);
+  background: var(--accent-fill);
   color: #15161b;
   padding: 12px 20px;
 }
@@ -153,12 +152,12 @@ main:focus {
   font-weight: 750;
 }
 .button-primary {
-  background: var(--accent);
+  background: var(--accent-fill);
   color: #15161b;
   box-shadow: 0 4px 0 #8c7940;
 }
 .button-primary:hover {
-  background: var(--accent-hover);
+  background: var(--accent-fill-hover);
   transform: translateY(-3px);
   box-shadow: 0 7px 0 #8c7940;
 }

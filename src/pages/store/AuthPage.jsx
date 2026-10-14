@@ -1,4 +1,5 @@
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
+import { useColorMode } from '../../hooks/useColorMode'
 import { Link, Navigate, useNavigate, useSearchParams } from 'react-router'
 import { useAuth } from '../../hooks/useAuth'
 import { apiError, apiFields } from '../../utils/api'
@@ -8,13 +9,13 @@ import PasswordChecks from '../../components/common/PasswordChecks'
 import TextField from '@mui/material/TextField'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
-const authTheme = createTheme({
+const makeAuthTheme = (mode) => createTheme({
   palette: {
-    mode: 'dark',
-    primary: { main: '#f4da81' },
-    error: { main: '#f5a698' },
-    success: { main: '#9ee0c7' },
-    text: { primary: '#f6f3ea', secondary: '#b7b6c3' },
+    mode,
+    primary: { main: mode === 'dark' ? '#f4da81' : '#806009' },
+    error: { main: mode === 'dark' ? '#f5a698' : '#9f3029' },
+    success: { main: mode === 'dark' ? '#9ee0c7' : '#216653' },
+    text: { primary: mode === 'dark' ? '#f6f3ea' : '#272623', secondary: mode === 'dark' ? '#b7b6c3' : '#625f59' },
   },
   typography: { fontFamily: "'Segoe UI', Arial, sans-serif" },
   shape: { borderRadius: 12 },
@@ -29,6 +30,8 @@ const authTheme = createTheme({
 })
 
 export default function AuthPage({ register = false }) {
+  const mode = useColorMode()
+  const authTheme = useMemo(() => makeAuthTheme(mode), [mode])
   const [values, setValues] = useState({
     name: '',
     email: '',
