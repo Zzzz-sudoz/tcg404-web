@@ -884,7 +884,7 @@ dialog.signout-dialog {
 .finishing-metrics .metric small { min-height: 40px; line-height: 1.5; }
 .metric-sparkline { width: 100%; height: 60px; color: rgb(var(--metric-color)); }
 .finishing-dashboard-primary { display: grid; grid-template-columns: minmax(0,2.5fr) minmax(260px,1fr); gap: 24px; align-items: stretch; }
-.finishing-dashboard-secondary { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; align-items: stretch; margin-block: 24px; }
+.finishing-dashboard-secondary { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); grid-auto-rows: 1fr; gap: 24px; align-items: stretch; margin-block: 24px; }
 .finishing-dashboard-primary > *, .finishing-dashboard-secondary > * { min-width: 0; margin: 0; }
 .best-sellers-panel { display: flex; flex-direction: column; }
 .best-sellers-panel .pagination { margin-top: auto; padding-top: 20px; flex-wrap: wrap; gap: 8px; font-size: .85rem; }
