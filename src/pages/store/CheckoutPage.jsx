@@ -175,12 +175,12 @@ export default function CheckoutPage() {
             ORDER CONFIRMED / {confirmation.orderNumber}
           </p>
           <h1>Order placed successfully.</h1>
-          <p>
-            Order status:{' '}
-            <strong>{orderStatusLabel(confirmation.status)}</strong>. Payment
-            status: <strong>{paymentLabel(confirmation)}</strong>.
-          </p>
-          <p>{paymentMethodLabel(confirmation.payment)}</p>
+          <div className="confirmation-status">
+            <p className="row-between">Order status <strong>{orderStatusLabel(confirmation.status)}</strong></p>
+            <p className="row-between">Payment status <strong>{paymentLabel(confirmation)}</strong></p>
+            <p className="muted">{paymentMethodLabel(confirmation.payment)}</p>
+          </div>
+          <section className="confirmation-delivery">
           <h2>Deliver to</h2>
           <p>
             {confirmation.shipping.name} · {confirmation.shipping.phone}
@@ -188,6 +188,9 @@ export default function CheckoutPage() {
           <p className="preserve-lines">
             {deliveryAddress(confirmation.shipping)}
           </p>
+          </section>
+          <section className="confirmation-items">
+          <h2>Ordered singles</h2>
           <ul>
             {confirmation.items.map((line) => (
               <li key={line.productId}>
@@ -195,6 +198,8 @@ export default function CheckoutPage() {
               </li>
             ))}
           </ul>
+          </section>
+          <div className="confirmation-totals">
           {[
             ['Subtotal', confirmation.subtotal],
             ['Shipping', confirmation.shippingFee],
@@ -206,6 +211,8 @@ export default function CheckoutPage() {
               <strong>{formatPrice(value)}</strong>
             </div>
           ))}
+          </div>
+          <div className="confirmation-actions">
           <Link className="text-link" to={`/account/orders/${confirmation.id}`}>
             View order details
           </Link>
@@ -217,6 +224,7 @@ export default function CheckoutPage() {
           <Link className="button button-primary" to="/shop">
             Browse more singles
           </Link>
+          </div>
         </div>
       </div>
     )

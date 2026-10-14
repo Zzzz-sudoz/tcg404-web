@@ -418,13 +418,25 @@ button:disabled {
   margin-inline: auto;
   padding: 48px;
   border-top: 3px solid var(--accent);
+  display: grid;
+  gap: 28px;
 }
+.confirmation-panel h1 { margin: 0; font-size: clamp(2rem, 5vw, 3.5rem); }
+.confirmation-status { display: grid; gap: 8px; }
+.confirmation-delivery, .confirmation-items { display: grid; gap: 12px; }
 .confirmation-panel ul {
-  padding: 24px;
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 12px;
 }
 .confirmation-panel .button {
   margin-top: 24px;
 }
+.confirmation-totals { display: grid; gap: 12px; border-top: 1px solid var(--border); padding-top: 20px; }
+.confirmation-totals > :last-child { border-top: 1px solid var(--border); padding-top: 12px; font-size: 1.1rem; }
+.confirmation-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; padding-top: 8px; }
+.confirmation-actions .button { margin: 0; }
 .field-error {
   color: light-dark(hsl(9 70% 30%), #ffb3a6);
   font-size: 0.85rem;

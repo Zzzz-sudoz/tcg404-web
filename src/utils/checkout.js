@@ -42,17 +42,11 @@ export function validatePayment(payment) {
   const errors = {}
   if (payment.method === 'card') {
     const digits = (payment.number || '').replace(/\D/g, '')
-    const checksum = [...digits].reverse().reduce((sum, digit, index) => {
-      const value = Number(digit) * (index % 2 ? 2 : 1)
-      return sum + (value > 9 ? value - 9 : value)
-    }, 0)
     if (
       !/^[\d -]+$/.test(payment.number || '') ||
-      !/^\d{12,19}$/.test(digits) ||
-      /^0+$/.test(digits) ||
-      checksum % 10 !== 0
+      !/^\d{12,19}$/.test(digits)
     )
-      errors.number = 'Enter a valid card number of 12 to 19 digits.'
+      errors.number = 'Enter 12 to 19 digits.'
     if (!payment.holder?.trim() || payment.holder.trim().length > 100)
       errors.holder = 'Enter the name on your card.'
     const expiry = /^(0[1-9]|1[0-2])\/(\d{2})$/.exec(payment.expiry || '')
