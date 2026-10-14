@@ -16,7 +16,9 @@ export default function AdminProductsPage() {
   const [revision, setRevision] = useState(0)
   const [saving, setSaving] = useState(false)
   const [actionError, setActionError] = useState('')
-  const response = useApiQuery('/admin/products', params.toString(), revision)
+  const query = new URLSearchParams(params)
+  query.set('limit', '15')
+  const response = useApiQuery('/admin/products', query.toString(), revision)
   useEffect(() => {
     if (!response.loading && !response.error) rememberProducts(response.data)
   }, [response.data, response.loading, response.error, rememberProducts])
