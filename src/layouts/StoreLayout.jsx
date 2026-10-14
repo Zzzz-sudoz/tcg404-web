@@ -73,7 +73,6 @@ function StoreHeader() {
             <Icon name="arrow" />
           </button>
         </form>
-        <ThemeToggle className="header-theme-toggle" />
         <div className="header-actions">
           {!isAdmin && (
             <Link className="utility-link" to="/cart" onClick={closeMenu}>
@@ -118,10 +117,11 @@ function StoreHeader() {
         </p>
       )}
       <div className="navigation-wrap">
+        <div className="store-navigation-row page-width">
         <nav
           id="store-navigation"
           aria-label="Main navigation"
-          className={`store-nav page-width ${menuOpen ? 'is-open' : ''}`}
+          className={`store-nav ${menuOpen ? 'is-open' : ''}`}
         >
           <NavLink to="/" end onClick={closeMenu}>
             Home
@@ -147,6 +147,8 @@ function StoreHeader() {
             {user?.name || 'Account'}
           </Link>
         </nav>
+        <ThemeToggle className="navigation-theme-toggle" />
+        </div>
       </div>
     </header>
   )
