@@ -33,8 +33,9 @@ function ProductDetail({ slug }) {
         ? products.find((item) => item.slug === slug || item.id === slug)
         : null
   useEffect(() => {
-    if (product) rememberProducts([product])
-  }, [product, rememberProducts])
+    if (!response.loading && !response.error && product)
+      rememberProducts([product])
+  }, [product, response.loading, response.error, rememberProducts])
   const [quantity, setQuantity] = useState(1)
   const [message, setMessage] = useState('')
   const [added, setAdded] = useState(false)
