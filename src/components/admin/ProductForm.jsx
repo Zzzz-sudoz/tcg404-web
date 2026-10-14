@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { games } from '../../data/store'
+import { games, formatPrice } from '../../data/store'
 import { apiError, apiFields } from '../../utils/api'
 import { validateProduct } from '../../utils/productValidation'
 import CardImage from '../store/CardImage'
@@ -139,7 +139,7 @@ export default function ProductForm({ initial, products, onSave, onCancel }) {
         )}
       </section>
       <aside className="admin-panel product-proof">
-        <p className="eyebrow">ARTWORK PROOF</p>
+        <p className="eyebrow">PRODUCT PREVIEW</p>
         <div className="proof-art">
           <CardImage
             key={values.imageUrl}
@@ -154,6 +154,10 @@ export default function ProductForm({ initial, products, onSave, onCancel }) {
         </div>
         <h2>{values.name || 'Your next single'}</h2>
         <p>{values.setName || 'Set not entered'}</p>
+        <p>{games.find((game) => game.id === values.game)?.name} · {values.condition}</p>
+        <p className="detail-price">{formatPrice(Number(values.price) || 0)}</p>
+        <p>{values.stock === '' ? 'Stock not entered' : `${values.stock} in stock`}</p>
+        <p>{values.isActive === false ? 'Archived · hidden from the store' : 'Active in store'}</p>
         <SavedReference product={initial} />
         <p className="prototype-note">
           Saved changes persist in store inventory. Artwork uses a URL or local
