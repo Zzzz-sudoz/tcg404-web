@@ -11,6 +11,7 @@ import {
   orderStatusLabel,
 } from '../../utils/operations'
 import QueryState from '../../components/common/QueryState'
+import Pagination from '../../components/common/Pagination'
 
 function InsightList({ products, type }) {
   return (
@@ -182,8 +183,12 @@ function GameChart({ data }) {
 }
 
 function BestSellers({ data }) {
+  const [requestedPage, setPage] = useState(1)
+  const pages = Math.max(1, Math.ceil(data.topProducts.length / 4))
+  const page = Math.min(requestedPage, pages)
+  const offset = (page - 1) * 4
   return (
-    <section className="admin-panel analytics-panel">
+    <section className="admin-panel analytics-panel best-sellers-panel">
       <div className="panel-heading">
         <h2>Most collected</h2>
         <span className="panel-unit">Completed orders</span>
@@ -191,11 +196,11 @@ function BestSellers({ data }) {
       {!data.topProducts.length && (
         <p className="analytics-empty">No completed sales in this period.</p>
       )}
-      <ol className="ranked-list">
-        {data.topProducts.map((product, index) => (
+      <ol className="ranked-list" start={offset + 1}>
+        {data.topProducts.slice(offset, offset + 4).map((product, index) => (
           <li key={product.productId}>
             <span className="rank-position">
-              {String(index + 1).padStart(2, '0')}
+              {String(offset + index + 1).padStart(2, '0')}
             </span>
             <Link
               to={`/admin/inventory?search=${encodeURIComponent(product.name)}`}
@@ -210,6 +215,7 @@ function BestSellers({ data }) {
           </li>
         ))}
       </ol>
+      {pages > 1 && <Pagination page={page} pages={pages} onChange={setPage} />}
     </section>
   )
 }

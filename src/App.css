@@ -87,6 +87,9 @@
 .global-search input::placeholder {
   color: var(--muted);
 }
+.global-search input:focus-visible {
+  outline: none;
+}
 .global-search button {
   width: 44px;
   min-width: 44px;

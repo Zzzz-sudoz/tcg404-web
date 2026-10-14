@@ -83,7 +83,6 @@ function ProductDetail({ slug }) {
             {product.gameName} · {product.rarity}
           </p>
           <h1>{product.name}</h1>
-          <FavoriteButton product={product}/>
           <p className="detail-price">{formatPrice(product.price)}</p>
           <p className="muted">Store selling price · PHP</p>
           <SavedReference product={product} />
@@ -138,6 +137,7 @@ function ProductDetail({ slug }) {
               <button className="button button-primary" disabled={!remaining}>
                 {!product.stock ? 'Out of stock' : remaining ? 'Add to cart' : 'In your cart'}
               </button>
+              <FavoriteButton product={product} showLabel />
             </form>
           )}
           {user?.role !== 'admin' && inCart > 0 && (

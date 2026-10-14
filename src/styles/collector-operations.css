@@ -550,6 +550,7 @@ dialog.signout-dialog {
 .add-cart-form {
   margin-bottom: 24px;
   gap: 16px;
+  flex-wrap: wrap;
 }
 .detail-copy > [role='status']:empty {
   display: none;
@@ -847,6 +848,8 @@ dialog.signout-dialog {
 .favorite-button { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid #73737f; border-radius: 50%; background: #202127; color: #f6f3e8; cursor: pointer; }
 .favorite-button.is-saved { color: #f4da81; border-color: #f4da81; }
 .favorite-button.is-saved svg { fill: currentColor; }
+.favorite-button-labeled { display: inline-flex; gap: 8px; width: auto; min-height: 44px; padding: 10px 16px; border-radius: var(--radius-control); font-weight: 600; }
+.favorite-button-labeled svg { flex-shrink: 0; }
 .favorite-button:focus-visible { outline: 3px solid #f4da81; outline-offset: 3px; }
 .favorite-button:disabled { opacity: .6; cursor: wait; }
 .favorite-control .field-error { display: block; max-width: 220px; padding: 8px; background: #202127; }
@@ -880,9 +883,12 @@ dialog.signout-dialog {
 .finishing-metrics .metric strong { color: #f6f3e8; overflow-wrap: anywhere; font-size: clamp(1.8rem,2.6vw,2.8rem); }
 .finishing-metrics .metric small { min-height: 40px; line-height: 1.5; }
 .metric-sparkline { width: 100%; height: 60px; color: rgb(var(--metric-color)); }
-.finishing-dashboard-primary { display: grid; grid-template-columns: minmax(0,2.5fr) minmax(260px,1fr); gap: 24px; align-items: start; }
-.finishing-dashboard-secondary { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; align-items: start; margin-block: 24px; }
+.finishing-dashboard-primary { display: grid; grid-template-columns: minmax(0,2.5fr) minmax(260px,1fr); gap: 24px; align-items: stretch; }
+.finishing-dashboard-secondary { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; align-items: stretch; margin-block: 24px; }
 .finishing-dashboard-primary > *, .finishing-dashboard-secondary > * { min-width: 0; margin: 0; }
+.best-sellers-panel { display: flex; flex-direction: column; }
+.best-sellers-panel .pagination { margin-top: auto; padding-top: 20px; flex-wrap: wrap; gap: 8px; font-size: .85rem; }
+.best-sellers-panel .pagination .button { padding-inline: 12px; }
 .responsive-trend { width: 100%; min-width: 0; margin-top: 24px; }
 .responsive-trend svg { display: block; width: 100%; height: auto; min-height: 260px; }
 .responsive-trend text { fill: #c4c1cf; font: 12px 'Segoe UI',sans-serif; }
