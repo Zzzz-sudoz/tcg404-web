@@ -97,17 +97,17 @@
   display: grid;
   padding-block: 20px;
 }
-.workshop-page label,
-.admin-page label {
+.workshop-page label:not(.MuiInputLabel-root),
+.admin-page label:not(.MuiInputLabel-root) {
   display: grid;
   gap: 7px;
   font-size: 0.85rem;
   font-weight: 600;
 }
-.workshop-page input,
+.workshop-page input:not(.MuiInputBase-input),
 .workshop-page select,
 .workshop-page textarea,
-.admin-page input,
+.admin-page input:not(.MuiInputBase-input),
 .admin-page select,
 .admin-page textarea {
   width: 100%;

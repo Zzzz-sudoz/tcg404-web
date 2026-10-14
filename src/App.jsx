@@ -1,8 +1,9 @@
 import './styles/loading.css'
+import { lazy, Suspense } from 'react'
+import LoadingLayout from './components/common/LoadingLayout'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router'
 import StoreLayout from './layouts/StoreLayout'
 import HomePage from './pages/store/HomePage'
-import AuthPage from './pages/store/AuthPage'
 import AuthProvider from './contexts/AuthProvider'
 import FavoritesProvider from './contexts/FavoritesProvider'
 import FavoritesPage from './pages/store/FavoritesPage'
@@ -33,6 +34,8 @@ import './App.css'
 import './styles/workshop.css'
 import './styles/collector-operations.css'
 import './styles/customer-workspace.css'
+
+const AuthPage = lazy(() => import('./pages/store/AuthPage'))
 
 export default function App() {
   return (
@@ -72,10 +75,10 @@ export default function App() {
                     />
                   </Route>
                 </Route>
-                <Route path="login" element={<AuthPage key="login" />} />
+                <Route path="login" element={<Suspense fallback={<LoadingLayout count={1} />}><AuthPage key="login" /></Suspense>} />
                 <Route
                   path="register"
-                  element={<AuthPage key="register" register />}
+                  element={<Suspense fallback={<LoadingLayout count={1} />}><AuthPage key="register" register /></Suspense>}
                 />
                 <Route path="*" element={<NotFoundPage />} />
               </Route>

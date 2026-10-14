@@ -5,6 +5,28 @@ import { apiError, apiFields } from '../../utils/api'
 import { safeReturnTo, loginDestination } from '../../utils/auth'
 import { validateRegistration } from '../../utils/password'
 import PasswordChecks from '../../components/common/PasswordChecks'
+import TextField from '@mui/material/TextField'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+
+const authTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: { main: '#f4da81' },
+    error: { main: '#f5a698' },
+    success: { main: '#9ee0c7' },
+    text: { primary: '#f6f3ea', secondary: '#b7b6c3' },
+  },
+  typography: { fontFamily: "'Segoe UI', Arial, sans-serif" },
+  shape: { borderRadius: 12 },
+  components: {
+    MuiOutlinedInput: {
+      styleOverrides: {
+        input: { '&:focus-visible': { outline: 'none' } },
+        notchedOutline: { borderColor: '#777887' },
+      },
+    },
+  },
+})
 
 export default function AuthPage({ register = false }) {
   const [values, setValues] = useState({
@@ -64,10 +86,15 @@ export default function AuthPage({ register = false }) {
       <header className="page-intro">
         <h1>{register ? 'Create account.' : 'Welcome back.'}</h1>
       </header>
+      <ThemeProvider theme={authTheme}>
       <form className="editor-panel auth-form" onSubmit={submit}>
         {fields.map((key) => (
-          <label key={key}>
-            {key === 'name'
+          <div key={key}>
+            <TextField
+              id={'auth-' + key}
+              fullWidth
+              variant="outlined"
+              label={key === 'name'
               ? 'Name'
               : key === 'email'
                 ? register
@@ -76,7 +103,6 @@ export default function AuthPage({ register = false }) {
                 : key === 'confirmPassword'
                   ? 'Confirm password'
                   : 'Password'}
-            <input
               name={key}
               type={
                 key.toLowerCase().includes('password')
@@ -95,7 +121,7 @@ export default function AuthPage({ register = false }) {
                     : key
               }
               required
-              maxLength={key === 'name' ? 100 : key === 'email' ? 254 : 128}
+              slotProps={{ htmlInput: { maxLength: key === 'name' ? 100 : key === 'email' ? 254 : 128 } }}
               value={values[key]}
               disabled={saving}
               onChange={(event) => {
@@ -105,26 +131,21 @@ export default function AuthPage({ register = false }) {
                 }))
                 setErrors((current) => ({ ...current, [key]: '' }))
               }}
-              aria-invalid={
+              error={
                 !!errors[key] ||
                 (key === 'confirmPassword' && !!values[key] && !matches)
               }
-              aria-describedby={errors[key] ? 'auth-' + key : undefined}
+              helperText={errors[key] || (key === 'confirmPassword' && values[key]
+                ? matches ? 'Passwords match.' : 'Passwords must match.'
+                : undefined)}
+              sx={key === 'confirmPassword' && values[key] && matches && !errors[key]
+                ? { '& .MuiFormHelperText-root': { color: 'success.main' } }
+                : undefined}
             />
             {key === 'password' && register && (
               <PasswordChecks value={values.password} />
             )}
-            {key === 'confirmPassword' && values[key] && !errors[key] && (
-              <span className={matches ? 'field-success' : 'field-error'}>
-                {matches ? 'Passwords match.' : 'Passwords must match.'}
-              </span>
-            )}
-            {errors[key] && (
-              <span id={'auth-' + key} className="field-error">
-                {errors[key]}
-              </span>
-            )}
-          </label>
+          </div>
         ))}
         <p
           ref={summary}
@@ -150,6 +171,7 @@ export default function AuthPage({ register = false }) {
           </Link>
         </p>
       </form>
+      </ThemeProvider>
     </div>
   )
 }
