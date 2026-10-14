@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useSearchParams } from 'react-router'
+import { Link, useNavigate, useSearchParams } from 'react-router'
 import { useOrderQuery } from '../../hooks/useOrderQuery'
 import { orderCategories, orderCategoryQuery } from '../../utils/orderHistory'
 import { formatPrice } from '../../data/store'
@@ -10,9 +10,11 @@ import {
   validateDateRange,
   orderStatusLabel,
 } from '../../utils/operations'
+import '../../styles/admin-catalog.css'
 import { paymentLabel, paymentMethodLabel } from '../../utils/checkout'
 
 export default function OrdersPage({ admin = false }) {
+  const navigate = useNavigate()
   const [params, setParams] = useSearchParams()
   const [error, setError] = useState('')
   const response = useOrderQuery(
@@ -63,7 +65,7 @@ export default function OrdersPage({ admin = false }) {
       )}
       {admin && (
         <form
-          className="admin-toolbar"
+          className="admin-toolbar admin-sticky-filters"
           onSubmit={filter}
           key={params.toString()}
         >
@@ -182,7 +184,10 @@ export default function OrdersPage({ admin = false }) {
               </thead>
               <tbody>
                 {response.data.map((order) => (
-                  <tr key={order.id} role="row">
+                  <tr key={order.id} role="row" className="admin-order-row"
+                    onClick={(event) => {
+                      if (!event.target.closest('a, button, input, select, textarea')) navigate(`${base}/${order.id}`)
+                    }}>
                     <td data-label="Order" role="cell">
                       <Link to={`${base}/${order.id}`}>
                         {order.orderNumber}

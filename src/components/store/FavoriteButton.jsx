@@ -15,7 +15,7 @@ export default function FavoriteButton({product, showLabel = false}) {
   const saved=favorites.ids.has(product.id)
   return <div className="favorite-control">
     <button type="button" className={`favorite-button ${showLabel?'favorite-button-labeled':''} ${saved?'is-saved':''}`} aria-label={`${saved?'Remove':'Add'} ${product.name} ${saved?'from':'to'} favorites`} aria-pressed={saved} disabled={!!user&&(favorites.loading||favorites.pending.has(product.id))} onClick={async()=>{
-      if(!user) {navigate(`/login?returnTo=${encodeURIComponent(location.pathname+location.search)}`);return}
+      if(!user) {navigate(`/login?returnTo=${encodeURIComponent(location.pathname+location.search)}`, { state: { backgroundLocation: location } });return}
       setError('')
       try {await favorites.toggle(product.id)} catch(e) {setError(apiError(e))}
     }}><Icon name="heart" />{showLabel && <span>{saved ? 'Remove from favorites' : 'Add to favorites'}</span>}</button>

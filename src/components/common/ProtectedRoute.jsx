@@ -23,6 +23,7 @@ export default function ProtectedRoute({ admin = false, customer = false, guest 
     return (
       <Navigate
         to={`/login?returnTo=${encodeURIComponent(location.pathname + location.search)}`}
+        state={{ backgroundLocation: { pathname: location.pathname === '/checkout' ? '/cart' : '/', search: '', hash: '' } }}
         replace
       />
     )

@@ -45,6 +45,7 @@ export default function AdminLayout() {
           ))}
         </nav>
         <div className="admin-sidebar-actions">
+          <div className="admin-theme-choice"><span>Appearance</span><ThemeToggle /></div>
           <Link className="button button-secondary" to="/">
             Back to store
           </Link>
@@ -58,7 +59,6 @@ export default function AdminLayout() {
         <header className="admin-topbar">
           <span>TCG404 / OPERATIONS</span>
           <span className="admin-identity">
-            <ThemeToggle />
             <Icon name="user" />
             {user.name}
             <span className="status-chip">Admin</span>

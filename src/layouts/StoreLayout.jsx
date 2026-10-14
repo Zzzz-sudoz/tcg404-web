@@ -15,6 +15,7 @@ function Brand() {
 }
 
 function StoreHeader() {
+  const location = useLocation()
   const { cart, persistenceNotice } = usePrototype()
   const { user } = useAuth()
   const isAdmin = user?.role === 'admin'
@@ -89,6 +90,7 @@ function StoreHeader() {
             <Link
               className="utility-link account-link"
               to={isAdmin ? '/admin' : user ? '/account' : '/login'}
+              state={!user ? { backgroundLocation: location } : undefined}
               onClick={closeMenu}
             >
               <Icon name="user" />
@@ -139,6 +141,7 @@ function StoreHeader() {
           <Link
             className="mobile-account"
             to={isAdmin ? '/admin' : user ? '/account' : '/login'}
+            state={!user ? { backgroundLocation: location } : undefined}
             onClick={closeMenu}
           >
             {user?.name || 'Account'}

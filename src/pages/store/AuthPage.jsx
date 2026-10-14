@@ -29,7 +29,7 @@ const makeAuthTheme = (mode) => createTheme({
   },
 })
 
-export default function AuthPage({ register = false }) {
+export default function AuthPage({ register = false, backgroundLocation, onBusyChange }) {
   const mode = useColorMode()
   const authTheme = useMemo(() => makeAuthTheme(mode), [mode])
   const [values, setValues] = useState({
@@ -46,7 +46,7 @@ export default function AuthPage({ register = false }) {
   const { authenticate, user } = useAuth()
   const [params] = useSearchParams()
   const navigate = useNavigate()
-  const returnTo = safeReturnTo(params.get('returnTo'))
+  const returnTo = safeReturnTo(params.get('returnTo'), backgroundLocation ? backgroundLocation.pathname + (backgroundLocation.search || '') : '/shop')
   const submit = async (event) => {
     event.preventDefault()
     if (pending.current) return
@@ -60,6 +60,7 @@ export default function AuthPage({ register = false }) {
     }
     pending.current = true
     setSaving(true)
+    onBusyChange?.(true)
     try {
       const authenticated = await authenticate(
         register ? 'register' : 'login',
@@ -77,6 +78,7 @@ export default function AuthPage({ register = false }) {
     } finally {
       pending.current = false
       setSaving(false)
+      onBusyChange?.(false)
     }
   }
   if (user?.role === 'admin') return <Navigate to="/admin" replace />
@@ -87,7 +89,7 @@ export default function AuthPage({ register = false }) {
   return (
     <div className="page-width workshop-page auth-page">
       <header className="page-intro">
-        <h1>{register ? 'Create account.' : 'Welcome back.'}</h1>
+        <h1 id="auth-title">{register ? 'Create account.' : 'Welcome back.'}</h1>
       </header>
       <ThemeProvider theme={authTheme}>
       <form className="editor-panel auth-form" onSubmit={submit}>
@@ -164,6 +166,10 @@ export default function AuthPage({ register = false }) {
         <p className="auth-switch">
           <span>{register ? 'Already have an account?' : "Don't have an account?"}</span>
           <Link
+            state={{ backgroundLocation }}
+            aria-disabled={saving || undefined}
+            tabIndex={saving ? -1 : undefined}
+            onClick={(event) => { if (saving) event.preventDefault() }}
             to={
               (register ? '/login' : '/register') +
               '?returnTo=' +

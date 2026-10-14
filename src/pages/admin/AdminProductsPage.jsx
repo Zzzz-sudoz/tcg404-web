@@ -7,6 +7,7 @@ import { apiError } from '../../utils/api'
 import Pagination from '../../components/common/Pagination'
 import Dialog from '../../components/common/Dialog'
 import CardImage from '../../components/store/CardImage'
+import '../../styles/admin-catalog.css'
 
 export default function AdminProductsPage() {
   const { rememberProducts, setProductActive } = usePrototype()
@@ -51,7 +52,7 @@ export default function AdminProductsPage() {
       {params.get('saved') && (
         <p role="status">Product saved to store inventory.</p>
       )}
-      <div className="admin-toolbar">
+      <div className="admin-toolbar admin-sticky-filters">
         <label>
           Search
           <input
@@ -128,83 +129,33 @@ export default function AdminProductsPage() {
           </button>
         </div>
       ) : (
-        <section className="admin-panel">
-          <p className="scroll-hint">
-            Scroll horizontally for all columns. Keyboard: focus the table area
-            and use arrow keys.
-          </p>
-          <div
-            className="table-scroll"
-            role="region"
-            tabIndex={0}
-            aria-label="Product inventory; scroll horizontally for all columns"
-          >
-            <table className="inventory-table">
-              <caption className="sr-only">Store products</caption>
-              <thead>
-                <tr>
-                  <th scope="col">Card / SKU</th>
-                  <th scope="col">Game / set</th>
-                  <th scope="col">Rarity / condition</th>
-                  <th scope="col">Price</th>
-                  <th scope="col">Stock</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {results.map((p) => (
-                  <tr key={p.id}>
-                    <td>
-                      <div className="inventory-identity">
-                        <div className="inventory-thumb">
-                          <CardImage src={p.imageUrl} name={p.name} />
-                        </div>
-                        <div>
-                          <strong>{p.name}</strong>
-                          <small>{p.sku}</small>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      {p.gameName}
-                      <small>{p.setName}</small>
-                    </td>
-                    <td>
-                      {p.rarity}
-                      <small>{p.condition}</small>
-                    </td>
-                    <td>{formatPrice(p.price)}</td>
-                    <td>
-                      <span
-                        className={
-                          p.stock <= p.lowStockThreshold ? 'stock-low' : ''
-                        }
-                      >
-                        {p.stock}
-                      </span>
-                    </td>
-                    <td>
-                      <span className="status-chip">
-                        {p.isActive === false ? 'Archived' : 'Active'}
-                      </span>
-                    </td>
-                    <td>
-                      <div className="table-actions">
-                        <Link to={`/admin/products/${p.id}/edit`}>Edit</Link>
-                        <button
-                          className="text-link"
-                          onClick={() => setConfirm(p)}
-                        >
-                          {p.isActive === false ? 'Restore' : 'Archive'}
-                          <span className="sr-only"> {p.name}</span>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <section aria-label="Store products">
+          <div className="admin-product-grid">
+            {results.map((p) => (
+              <article className="product-card admin-product-card" key={p.id}>
+                <Link className="product-media" to={`/admin/products/${p.id}/edit`} aria-label={`Edit ${p.name}`}>
+                  <CardImage src={p.imageUrl} name={p.name} />
+                </Link>
+                <div className="product-meta">
+                  <span>{p.gameName}</span>
+                  <span className="status-chip">{p.isActive === false ? 'Archived' : 'Active'}</span>
+                </div>
+                <h2>{p.name}</h2>
+                <p className="product-set">{p.setName}</p>
+                <p className="product-condition">{p.rarity} · {p.condition}</p>
+                <p className="admin-product-sku">{p.sku}</p>
+                <div className="product-bottom">
+                  <strong>{formatPrice(p.price)}</strong>
+                  <span className={p.stock <= p.lowStockThreshold ? 'stock-low' : ''}>{p.stock} in stock</span>
+                </div>
+                <div className="admin-product-actions">
+                  <Link className="button" to={`/admin/products/${p.id}/edit`}>Edit<span className="sr-only"> {p.name}</span></Link>
+                  <button className="button" onClick={() => setConfirm(p)}>
+                    {p.isActive === false ? 'Restore' : 'Archive'}<span className="sr-only"> {p.name}</span>
+                  </button>
+                </div>
+              </article>
+            ))}
           </div>
           <Pagination
             page={page}

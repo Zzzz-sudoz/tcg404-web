@@ -1,15 +1,33 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useBlocker } from 'react-router'
 import { games, formatPrice } from '../../data/store'
 import { apiError, apiFields } from '../../utils/api'
 import { validateProduct } from '../../utils/productValidation'
 import CardImage from '../store/CardImage'
 import SavedReference from '../store/SavedReference'
+import Dialog from '../common/Dialog'
+import { productHasChanges } from '../../utils/productChanges'
+import '../../styles/admin-catalog.css'
 
-export default function ProductForm({ initial, products, onSave, onCancel }) {
+export default function ProductForm({ initial, products, onSave, onSaved, onCancel }) {
   const [values, setValues] = useState(initial)
   const [errors, setErrors] = useState({})
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
+  const [review, setReview] = useState(null)
+  const allowNavigation = useRef(false)
+  const savePending = useRef(false)
+  const dirty = productHasChanges(initial, values)
+  const blocker = useBlocker(() => (dirty || saving) && !allowNavigation.current)
+  useEffect(() => {
+    const warn = (event) => {
+      if ((!dirty && !saving) || allowNavigation.current) return
+      event.preventDefault()
+      event.returnValue = ''
+    }
+    window.addEventListener('beforeunload', warn)
+    return () => window.removeEventListener('beforeunload', warn)
+  }, [dirty, saving])
   const change = (key, value) =>
     setValues((current) => ({ ...current, [key]: value }))
   const fields = [
@@ -26,24 +44,17 @@ export default function ProductForm({ initial, products, onSave, onCancel }) {
     ['imageUrl', 'Artwork URL or local path'],
   ]
   return (
+    <>
     <form
       className="product-editor"
       noValidate
-      onSubmit={async (e) => {
+      onSubmit={(e) => {
         e.preventDefault()
         const result = validateProduct(values, products, initial.id)
         setErrors(result.errors)
         if (Object.keys(result.errors).length) return
-        setSaving(true)
         setMessage('')
-        try {
-          await onSave(result.product)
-        } catch (error) {
-          setErrors(apiFields(error))
-          setMessage(apiError(error))
-        } finally {
-          setSaving(false)
-        }
+        setReview(result.product)
       }}
     >
       <section className="editor-panel">
@@ -165,5 +176,40 @@ export default function ProductForm({ initial, products, onSave, onCancel }) {
         </p>
       </aside>
     </form>
+    <Dialog open={!!review} onClose={() => setReview(null)} labelledBy="product-save-heading" className="product-save-dialog" busy={saving} cancelLabel="Back to edit">
+      <h2 id="product-save-heading">{initial.id && !dirty ? 'No changes detected.' : 'Review product'}</h2>
+      <p>{initial.id && !dirty ? 'Are you sure you want to save this product again?' : 'Are you sure you want to save this product?'}</p>
+      <div className="proof-art"><CardImage src={review?.imageUrl} name={review?.name || 'Product'} /></div>
+      <h3>{review?.name}</h3>
+      <p>{review?.setName}</p>
+      <p className="detail-price">{formatPrice(Number(review?.price) || 0)}</p>
+      <p>{review?.stock} in stock · {review?.isActive === false ? 'Archived' : 'Active in store'}</p>
+      {message && <p className="field-error" role="alert">{message}</p>}
+      <button type="button" className="button button-primary" disabled={saving} onClick={async () => {
+        if (savePending.current) return
+        savePending.current = true
+        setSaving(true)
+        setMessage('')
+        try {
+          await onSave(review)
+          allowNavigation.current = true
+          setReview(null)
+          onSaved()
+        } catch (error) {
+          allowNavigation.current = false
+          setErrors(apiFields(error))
+          setMessage(apiError(error))
+        } finally {
+          savePending.current = false
+          setSaving(false)
+        }
+      }}>{saving ? 'Saving...' : 'Confirm save'}</button>
+    </Dialog>
+    <Dialog open={blocker.state === 'blocked'} onClose={() => blocker.reset?.()} labelledBy="product-leave-heading" className="product-save-dialog" cancelLabel="Keep editing" focusCancel busy={saving}>
+      <h2 id="product-leave-heading">Discard unsaved changes?</h2>
+      <p>{saving ? 'Your product is being saved. Please wait for the result before leaving.' : 'Your product changes have not been saved. Are you sure you want to leave?'}</p>
+      <button type="button" className="button button-primary" disabled={saving} onClick={() => blocker.proceed?.()}>Discard and leave</button>
+    </Dialog>
+    </>
   )
 }

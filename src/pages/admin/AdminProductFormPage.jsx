@@ -62,10 +62,8 @@ function Editor({ initial }) {
         initial={initial}
         products={products}
         onCancel={() => navigate('/admin/products')}
-        onSave={async (product) => {
-          await upsertProduct(product)
-          navigate('/admin/products?saved=true')
-        }}
+        onSave={upsertProduct}
+        onSaved={() => navigate('/admin/products?saved=true')}
       />
     </div>
   )

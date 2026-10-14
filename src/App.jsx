@@ -1,7 +1,8 @@
 import './styles/loading.css'
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import LoadingLayout from './components/common/LoadingLayout'
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router'
+import { createBrowserRouter, RouterProvider, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router'
+import Dialog from './components/common/Dialog'
 import StoreLayout from './layouts/StoreLayout'
 import HomePage from './pages/store/HomePage'
 import AuthProvider from './contexts/AuthProvider'
@@ -38,14 +39,29 @@ import './styles/theme.css'
 
 const AuthPage = lazy(() => import('./pages/store/AuthPage'))
 
-export default function App() {
+function Application() {
   return (
-    <BrowserRouter>
       <AuthProvider>
         <FavoritesProvider>
         <PrototypeProvider>
           <CartProvider>
-            <Routes>
+            <ApplicationRoutes />
+          </CartProvider>
+        </PrototypeProvider>
+        </FavoritesProvider>
+      </AuthProvider>
+  )
+}
+
+function ApplicationRoutes() {
+  const location = useLocation()
+  const navigate = useNavigate()
+  const [authBusy, setAuthBusy] = useState(false)
+  const isAuth = location.pathname === '/login' || location.pathname === '/register'
+  const background = location.state?.backgroundLocation || { pathname: '/', search: '', hash: '' }
+  const closeAuth = () => { if (!authBusy) navigate(background, { replace: true }) }
+  return <>
+            <Routes location={isAuth ? background : location}>
               <Route element={<StoreLayout />}>
                 <Route index element={<HomePage />} />
                 <Route path="shop" element={<ShopPage />} />
@@ -76,11 +92,6 @@ export default function App() {
                     />
                   </Route>
                 </Route>
-                <Route path="login" element={<Suspense fallback={<LoadingLayout count={1} />}><AuthPage key="login" /></Suspense>} />
-                <Route
-                  path="register"
-                  element={<Suspense fallback={<LoadingLayout count={1} />}><AuthPage key="register" register /></Suspense>}
-                />
                 <Route path="*" element={<NotFoundPage />} />
               </Route>
               <Route element={<ProtectedRoute admin />}>
@@ -113,10 +124,13 @@ export default function App() {
                 </Route>
               </Route>
             </Routes>
-          </CartProvider>
-        </PrototypeProvider>
-        </FavoritesProvider>
-      </AuthProvider>
-    </BrowserRouter>
-  )
+    {isAuth && <Dialog open onClose={closeAuth} labelledBy="auth-title" className="auth-dialog" cancelLabel="Back to browsing" busy={authBusy}>
+      <Suspense fallback={<LoadingLayout count={1} />}>
+        <AuthPage key={location.pathname} register={location.pathname === '/register'} backgroundLocation={background} onBusyChange={setAuthBusy} />
+      </Suspense>
+    </Dialog>}
+  </>
 }
+
+const router = createBrowserRouter([{ path: '*', element: <Application /> }])
+export default function App() { return <RouterProvider router={router} /> }

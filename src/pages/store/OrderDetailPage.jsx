@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { useOrderQuery } from '../../hooks/useOrderQuery'
+import '../../styles/admin-catalog.css'
 import { orderTimeline } from '../../utils/orderHistory'
 import { api, apiError } from '../../utils/api'
 import { formatPrice } from '../../data/store'
@@ -86,7 +87,7 @@ export default function OrderDetailPage({ admin = false }) {
                   </p>
                 </div>
               )}
-              {!admin && (
+              {(
                 <section className="order-timeline" aria-labelledby="order-progress-heading">
                   <h2 id="order-progress-heading">Order progress</h2>
                   <ol>
